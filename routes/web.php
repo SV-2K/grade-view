@@ -1,10 +1,23 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 
-Route::get('/hhh', function () {
+Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/group', function (Request $request) {
+    return view('pages.group', ['group' => $request->get('name')]);
+})->name('group');
+
+Route::get('/college', function () {
+    return view('pages.college');
+})->name('college');
+
+Route::get('/subject', function (Request $request) {
+    return view('pages.subject', ['subject' => $request->get('name')]);
+})->name('subject');
 
 Route::middleware([
     'auth:sanctum',
