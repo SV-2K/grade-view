@@ -20,4 +20,9 @@ class PagesController extends Controller
     {
         return view('pages.subject', ['subject' => $request->get('name')]);
     }
+
+    public function uploadPage()
+    {
+        return view('pages.upload');
+    }
 }

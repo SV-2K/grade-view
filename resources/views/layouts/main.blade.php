@@ -15,7 +15,7 @@
             @include('components.header')
         </header>
         <main>
-            <div class="container mt-5" style="background-color: #e3e3e3">
+            <div class="container mt-5 p-3" style="background-color: #e3e3e3">
                 @yield('main')
             </div>
         </main>
