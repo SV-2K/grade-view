@@ -1,23 +1,18 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PagesController;
 use Illuminate\Http\Request;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/group', function (Request $request) {
-    return view('pages.group', ['group' => $request->get('name')]);
-})->name('group');
-
-Route::get('/college', function () {
-    return view('pages.college');
-})->name('college');
-
-Route::get('/subject', function (Request $request) {
-    return view('pages.subject', ['subject' => $request->get('name')]);
-})->name('subject');
+Route::controller(PagesController::class)->group(function () {
+    Route::get('/group', 'group')->name('group');
+    Route::get('/college', 'college')->name('college');
+    Route::get('/subject', 'subject')->name('subject');
+});
 
 Route::middleware([
     'auth:sanctum',
