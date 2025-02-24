@@ -1,3 +1,8 @@
+@php
+    $groups = \App\Models\Group::all();
+    $subjects = \App\Models\Subject::all();
+@endphp
+
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
         <a class="navbar-brand" href="{{ route('group') }}">Grade view</a>
@@ -16,9 +21,9 @@
                                         Группа
                                     </a>
                                     <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item" href="#">Группа 1</a></li>
-                                        <li><a class="dropdown-item" href="#">Группа 2</a></li>
-                                        <li><a class="dropdown-item" href="#">Группа 3</a></li>
+                                        @foreach($groups as $group)
+                                            <li><a class="dropdown-item" href="{{ route('group', ['name' => $group->name]) }}">{{ $group->name }}</a></li>
+                                        @endforeach
                                     </ul>
                                 </li>
                             </ul>
@@ -43,9 +48,9 @@
                                         Предмет
                                     </a>
                                     <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item" href="#">Предмет 1</a></li>
-                                        <li><a class="dropdown-item" href="#">Предмет 2</a></li>
-                                        <li><a class="dropdown-item" href="#">Предмет 3</a></li>
+                                        @foreach($subjects as $subject)
+                                            <li><a class="dropdown-item" href="{{ route('subject', ['name' => $subject->name]) }}">{{ $subject->name }}</a></li>
+                                        @endforeach
                                     </ul>
                                 </li>
                             </ul>
