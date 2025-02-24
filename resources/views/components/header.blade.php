@@ -8,13 +8,51 @@
         <div class="collapse navbar-collapse justify-content-center" id="navbarSupportedContent">
             <ul class="navbar-nav mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="{{ route('group') }}">Группа</a>
+                    @if(Request::is('group'))
+                        <div class="collapse navbar-collapse" id="navbarNavDarkDropdown">
+                            <ul class="navbar-nav">
+                                <li class="nav-item dropdown">
+                                    <a class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Группа
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="#">Группа 1</a></li>
+                                        <li><a class="dropdown-item" href="#">Группа 2</a></li>
+                                        <li><a class="dropdown-item" href="#">Группа 3</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    @else
+                        <a class="nav-link" aria-current="page" href="{{ route('group') }}">Группа</a>
+                    @endif
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" href="{{ route('college') }}">Колледж</a>
+                    @if(Request::is('college'))
+                        <button class="btn btn-primary">Колледж</button>
+                    @else
+                        <a class="nav-link" href="{{ route('college') }}">Колледж</a>
+                    @endif
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('subject') }}">Предмет</a>
+                    @if(Request::is('subject'))
+                        <div class="collapse navbar-collapse" id="navbarNavDarkDropdown">
+                            <ul class="navbar-nav">
+                                <li class="nav-item dropdown">
+                                    <a class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Предмет
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="#">Предмет 1</a></li>
+                                        <li><a class="dropdown-item" href="#">Предмет 2</a></li>
+                                        <li><a class="dropdown-item" href="#">Предмет 3</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    @else
+                        <a class="nav-link" aria-current="page" href="{{ route('subject') }}">Предмет</a>
+                    @endif
                 </li>
             </ul>
         </div>
