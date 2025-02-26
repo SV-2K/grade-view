@@ -8,7 +8,7 @@ class PagesController extends Controller
 {
     public function group(Request $request)
     {
-        return view('pages.group', ['group' => $request->get('name')]);
+        return view('pages.group', ['group' => $request->input('name')]);
     }
 
     public function college()
@@ -18,7 +18,7 @@ class PagesController extends Controller
 
     public function subject(Request $request)
     {
-        return view('pages.subject', ['subject' => $request->get('name')]);
+        return view('pages.subject', ['subject' => $request->input('name')]);
     }
 
     public function uploadPage()

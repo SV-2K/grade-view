@@ -15,7 +15,7 @@ Route::controller(PagesController::class)->group(function () {
     Route::get('/feedback', 'feedback')->name('feedback');
 });
 
-Route::post('/monitoring-upload', [FileController::class, 'upload'])->name('monitoring.upload');
+Route::post('/monitoring-upload', [FileController::class, 'uploadMonitoring'])->name('monitoring.upload');
 
 Route::post('/feedback', [FeedbackController::class, 'send'])->name('feedback.send');
 
