@@ -12,7 +12,6 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('attendances', function (Blueprint $table) {
-            $table->id();
             $table->unsignedBigInteger('student_id');
             $table->smallInteger('excused_hours');
             $table->smallInteger('unexcused_hours');
