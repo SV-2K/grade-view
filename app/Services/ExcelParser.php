@@ -109,11 +109,16 @@ class ExcelParser
 
     private function storeSubject(string $name): int
     {
-        $subject = Subject::create([
-            'name' => $name
-        ]);
+        $subjectId = $this->getSubjectId($name);
 
-        return $subject->id;
+        if (NULL == $subjectId) {
+            $subject = Subject::create([
+                'name' => $name
+            ]);
+
+            return $subject->id;
+        }
+        return $subjectId;
     }
 
     private function storeAttendance(int|string|null $excused_hours, int|string|null $unexcused_hours, int $studentId): void
@@ -159,5 +164,13 @@ class ExcelParser
             return 0;
         }
         return $attendance ?? 0;
+    }
+
+    private function getSubjectId(string $name ): int|null
+    {
+        if (Subject::whereName($name)->exists()) {
+            return Subject::whereName($name)->first()->id;
+        }
+        return NULL;
     }
 }
