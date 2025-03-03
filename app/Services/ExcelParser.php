@@ -28,7 +28,6 @@ class ExcelParser
             $rowStopper = $this->getRowStopper($workSheet);
             $columnStopper = $this->getColumnStopper($workSheet);
             $this->processData($workSheet, $rowStopper, $columnStopper);
-            break;
         }
     }
 
@@ -41,17 +40,17 @@ class ExcelParser
 
         for ($column = $this->columnStarter; $column < $columnStopper; $column++) {
 
-            $subjectName = $workSheet->getCell([$column, 14]);
+            $subjectName = $workSheet->getCell([$column, 14])->getValue();
             $subjectId = $this->storeSubject($subjectName);
 
             for ($row = $this->rowStarter; $row < $rowStopper; $row++) {
                 if (!isset($studentIds[$row])) {
-                    $studentName = $workSheet->getCell([3, $row]);
+                    $studentName = $workSheet->getCell([3, $row])->getValue();
                     $studentIds[$row] = $this->storeStudent($studentName, $groupId);
 
-                    $excused_hours = $workSheet->getCell([$columnStopper + 1, $row]);
-                    $unexcused_hours = $workSheet->getCell([$columnStopper + 2, $row]);
-//                    $this->storeAttendance($excused_hours, $unexcused_hours, $studentIds[$row]);
+                    $excused_hours = $workSheet->getCell([$columnStopper + 1, $row])->getValue();
+                    $unexcused_hours = $workSheet->getCell([$columnStopper + 2, $row])->getValue();
+                    $this->storeAttendance($excused_hours, $unexcused_hours, $studentIds[$row]);
                 }
 
                 $grade = $workSheet->getCell([$column, $row])->getValue();
@@ -60,14 +59,33 @@ class ExcelParser
         }
     }
 
-    private function getColumnStopper($sheet): int
+    private function getColumnStopper($sheet): int|null
     {
-        return 8;
+        for ($column = $this->columnStarter; $column < 20; $column++) {
+
+            $cell = $sheet->getCell([$column, 14])->getValue();
+
+            if ($cell === NULL) {
+                $columnStopper = $column;
+                break;
+            }
+        }
+        return $columnStopper ?? NULL;
+
     }
 
-    private function getRowStopper($sheet): int
+    private function getRowStopper($sheet): int|null
     {
-        return 30;
+        for ($row = $this->rowStarter; $row < 50; $row++) {
+
+            $cell = $sheet->getCell([4, $row])->getValue();
+
+            if ($cell === NULL || $cell === 'Средний балл') {
+                $rowStopper = $row;
+                break;
+            }
+        }
+        return $rowStopper ?? NULL;
     }
 
     private function storeGroup(string $name): int
@@ -98,12 +116,15 @@ class ExcelParser
         return $subject->id;
     }
 
-    private function storeAttendance(int $excused_hours, int $unexcused_hours, int $studentId): void
+    private function storeAttendance(int|string|null $excused_hours, int|string|null $unexcused_hours, int $studentId): void
     {
+        $excused_hours = $this->getAttendanceNum($excused_hours);
+        $unexcused_hours = $this->getAttendanceNum($unexcused_hours);
+
         Attendance::create([
             'excused_hours' => $excused_hours,
             'unexcused_hours' => $unexcused_hours,
-            'student_ud' => $studentId
+            'student_id' => $studentId
         ]);
     }
 
@@ -130,5 +151,13 @@ class ExcelParser
         }
 
         return 2;
+    }
+
+    private function getAttendanceNum(int|string|null $attendance): int
+    {
+        if (isString($attendance)) {
+            return 0;
+        }
+        return $attendance ?? 0;
     }
 }
