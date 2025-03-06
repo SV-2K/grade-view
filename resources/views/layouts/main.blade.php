@@ -6,6 +6,7 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
     <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script>
     <title>Document</title>
 </head>
@@ -15,7 +16,7 @@
             @include('components.header')
         </header>
         <main>
-            <div class="container mt-5 p-3" style="background-color: #e3e3e3">
+            <div class="container mt-5 p-3">
                 @yield('main')
             </div>
         </main>
