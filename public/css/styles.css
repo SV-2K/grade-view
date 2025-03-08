@@ -28,8 +28,8 @@ body {
     padding: 0.25rem 0.5rem;
     border-radius: 15px;
     background: #eaecf6;
-    box-shadow:  12px 12px 24px #c7c9d1,
-    -12px -12px 24px #ffffff;
+    box-shadow:  10px 10px 20px #c7c9d1,
+    -10px -10px 20px #ffffff;
 }
 
 .name-section {
