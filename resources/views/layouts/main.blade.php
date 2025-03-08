@@ -16,7 +16,7 @@
             @include('components.header')
         </header>
         <main>
-            <div class="container mt-5 p-3">
+            <div class="main container mt-5">
                 @yield('main')
             </div>
         </main>
