@@ -10,10 +10,10 @@
     </div>
     <div class="container text-center mt-4">
         <div class="row gap-4">
-            <div class="section col">
-                Column
+            <div id="chart" class="section col-8">
+
             </div>
-            <div class="col-4 gap-4 p-0">
+            <div class="col gap-4 p-0">
                 <div class="info-section">
                     <div class="section">
                         Средний балл:
@@ -42,4 +42,22 @@
             </div>
         </div>
     </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            console.log("C3.js загружен, создаем график...");
+
+            var chart = c3.generate({
+                bindto: '#chart',
+                data: {
+                    columns: [
+                        ['data1', 30, 200, 100, 400, 150, 250],
+                        ['data2', 50, 20, 10, 40, 15, 25]
+                    ]
+                }
+            });
+
+            console.log("График должен был отобразиться.");
+        });
+
+    </script>
 @endsection
