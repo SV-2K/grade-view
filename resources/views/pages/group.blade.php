@@ -1,12 +1,16 @@
 @extends('layouts.main')
 
 @section('main')
-    <div class="name-section section">
-        <h3 class="m-0">
+    <div class="top-section">
+        <h3 class="m-0 section">
             @php
-            echo $group ?? 'Выберите группу...';
+                echo $group ?? 'Выберите группу...';
             @endphp
         </h3>
+        <form class="d-flex gap-4" role="search" method="post">
+            <input class="search-bar input" type="search" placeholder="Поиск (не работает)" aria-label="Search">
+            <button class="search-button" type="submit">&#128269;</button>
+        </form>
     </div>
     <div class="container text-center mt-4">
         <div class="row gap-4">

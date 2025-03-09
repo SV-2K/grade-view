@@ -1,8 +1,8 @@
 @extends('layouts.main')
 
 @section('main')
-    <div class="name-section section">
-        <h3 class="m-0">
+    <div class="top-section">
+        <h3 class="m-0 section">
             Статистика колледжа
         </h3>
     </div>
