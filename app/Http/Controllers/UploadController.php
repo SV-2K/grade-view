@@ -5,12 +5,17 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Services\ExcelParser;
 
-class FileController extends Controller
+class UploadController extends Controller
 {
     public function __construct(
         protected ExcelParser $excelParser
     )
     {}
+
+    public function show()
+    {
+        return view('pages.upload');
+    }
 
     public function uploadMonitoring(Request $request)
     {

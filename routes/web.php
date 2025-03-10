@@ -1,23 +1,25 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\PagesController;
-use App\Http\Controllers\FileController;
+use App\Http\Controllers\UploadController;
 use App\Http\Controllers\FeedbackController;
+use App\Http\Controllers\GroupController;
+use App\Http\Controllers\CollegeController;
+use App\Http\Controllers\SubjectController;
 use Illuminate\Http\Request;
 
-Route::controller(PagesController::class)->group(function () {
-    Route::get('/', 'group');
-    Route::get('/group', 'group')->name('group');
-    Route::get('/college', 'college')->name('college');
-    Route::get('/subject', 'subject')->name('subject');
-    Route::get('/monitoring-upload', 'uploadPage')->name('upload.page');
-    Route::get('/feedback', 'feedback')->name('feedback');
-});
+Route::get('/', [GroupController::class, 'show']);
+Route::get('/group', [GroupController::class, 'show'])->name('group');
 
-Route::post('/monitoring-upload', [FileController::class, 'uploadMonitoring'])->name('monitoring.upload');
+Route::get('/college', [CollegeController::class, 'show'])->name('college');
 
-Route::post('/feedback', [FeedbackController::class, 'send'])->name('feedback.send');
+Route::get('/subject', [SubjectController::class, 'show'])->name('subject');
+
+Route::get('/monitoring-upload', [UploadController::class, 'show'])->name('upload.page');
+Route::post('/monitoring-upload', [UploadController::class, 'uploadMonitoring'])->name('monitoring.upload');
+
+Route::get('/feedback', [FeedbackController::class, 'create'])->name('feedback');
+Route::post('/feedback', [FeedbackController::class, 'store'])->name('feedback.send');
 
 Route::middleware([
     'auth:sanctum',
