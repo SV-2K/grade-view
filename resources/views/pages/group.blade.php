@@ -13,11 +13,13 @@
         </form>
     </div>
     <div class="container text-center mt-4">
-        <div class="row gap-4">
-            <div class="section col">
-                Column
+        <div class="row">
+            <div class="col-8 p-0">
+                <div class="section me-4 h-100">
+                    Column 1
+                </div>
             </div>
-            <div class="col-4 gap-4 p-0">
+            <div class="col-4 p-0">
                 <div class="info-section">
                     <div class="section">
                         Средний балл:
@@ -32,17 +34,17 @@
                         Количество студентов:
                     </div>
                 </div>
-                <div class="section col mt-4" >
-                    Column
+                <div id="grade-ratio" class="section mt-4 p-0" style="height: 450px">
+                    @include('charts.grade-ratio')
                 </div>
             </div>
         </div>
         <div class="row gap-4 mt-4">
             <div class="section col">
-                Column
+                Column 3
             </div>
             <div class="section col-1">
-                Column
+                Column 4
             </div>
         </div>
     </div>

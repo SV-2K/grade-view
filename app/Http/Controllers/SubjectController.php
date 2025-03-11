@@ -8,6 +8,8 @@ class SubjectController extends Controller
 {
     public function show(Request $request)
     {
-        return view('pages.subject', ['subject' => $request->input('name')]);
+        return view('pages.subject')->with([
+            'subject' => $request->input('name')
+        ]);
     }
 }

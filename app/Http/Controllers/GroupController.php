@@ -8,6 +8,8 @@ class GroupController extends Controller
 {
     public function show(Request $request)
     {
-        return view('pages.group', ['group' => $request->input('name')]);
+        return view('pages.group')->with([
+            'group' => $request->input('name')
+        ]);
     }
 }

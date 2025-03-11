@@ -8,14 +8,16 @@
     </div>
     <div class="container text-center mt-4">
         <div class="row gap-4">
-            <div class="section col">
-                Column
+            <div class="section col-7">
+                Column 1
             </div>
-            <div class="row col-md-5 gap-4">
-                <div class="section col-md-2">
-                    Column
+            <div class="row col-5 gap-0">
+                <div class="col-3 p-0">
+                    <div class="section me-4 h-100">
+                        Column 2
+                    </div>
                 </div>
-                <div class="col gap-4 p-0">
+                <div class="col-9 gap-4 p-0">
                     <div class="info-section">
                         <div class="section">
                             Средний балл:
@@ -33,13 +35,13 @@
                             Количество студентов:
                         </div>
                     </div>
-                    <div class="section mt-4">
-                        Column
+                    <div id="grade-ratio" class="section mt-4 p-0" style="height: 400px">
+                        @include('charts.grade-ratio')
                     </div>
                 </div>
-                <div class="row m-0 p-0">
+                <div class="row m-0 mt-4 p-0">
                     <div class="section ">
-                        Column
+                        Column 3
                     </div>
                 </div>
             </div>
