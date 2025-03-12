@@ -15,8 +15,8 @@
     <div class="container text-center mt-4">
         <div class="row">
             <div class="col-8 p-0">
-                <div class="section me-4 h-100">
-                    Column 1
+                <div id="quality-performance" class="section me-4 h-100 p-0">
+                    @include('charts.quality-performance')
                 </div>
             </div>
             <div class="col-4 p-0">
@@ -34,17 +34,17 @@
                         Количество студентов:
                     </div>
                 </div>
-                <div id="grade-ratio" class="section mt-4 p-0" style="height: 450px">
-                    @include('charts.grade-ratio')
+                <div id="grades-ratio" class="section mt-4 p-0" style="height: 450px">
+                    @include('charts.grades-ratio')
                 </div>
             </div>
         </div>
         <div class="row gap-4 mt-4">
-            <div class="section col">
-                Column 3
+            <div id="absence-ratio" class="section col-1 p-0">
+                @include('charts.absence-ratio')
             </div>
-            <div class="section col-1">
-                Column 4
+            <div id="grade-distribution" class="section col p-0" style="height: 300px">
+                @include('charts.grade-distribution')
             </div>
         </div>
     </div>
