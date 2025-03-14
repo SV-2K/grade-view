@@ -8,7 +8,6 @@ use App\Models\Student;
 use App\Models\Subject;
 use App\Models\Attendance;
 use App\Models\Grade;
-use function PHPUnit\Framework\isString;
 
 class ExcelParser
 {
@@ -144,15 +143,15 @@ class ExcelParser
         ]);
     }
 
-    private function getGradeNum(string|array|null $grade): int
+    private function getGradeNum(string|null $grade): int
     {
-        if (isString($grade)) {
-            if (array_key_exists($grade, $this->gradeFiveKeywords)) {
-                return 5;
-            }
-        }
+
         if ($grade <= 5 && $grade > 2) {
             return $grade;
+        }
+
+        if (in_array($grade, $this->gradeFiveKeywords)) {
+            return 5;
         }
 
         return 2;
@@ -160,7 +159,7 @@ class ExcelParser
 
     private function getAttendanceNum(int|string|null $attendance): int
     {
-        if (isString($attendance)) {
+        if (is_string($attendance)) {
             return 0;
         }
         return $attendance ?? 0;
