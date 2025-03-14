@@ -2,19 +2,37 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Subject;
 use Illuminate\Http\Request;
 
 class SubjectController extends Controller
 {
     public function show(Request $request)
     {
+        $subjectName = $request->input('name');
+
+        if(is_null($subjectName)) {
+            return view('pages.subject')->with('isEmpty', true);
+        }
+
+        $subjectId = $this->getSubjectId($subjectName);
+
         return view('pages.subject')->with([
-            'subject' => $request->input('name'),
+            'isEmpty' => false,
+            'subject' => $subjectName,
             'categories' => $this->getGroups(),
             'grades' => $this->getGrades(),
             'averageGrades' => $this->getAverageGrades(),
             'gradesAmount' => $this->getGradesAmount(),
         ]);
+    }
+
+    private function getSubjectId(string $subjectName): int
+    {
+        $subjectId = Subject::where('name', $subjectName)
+            ->value('id');
+
+        return $subjectId;
     }
 
     private function getGroups(): array
