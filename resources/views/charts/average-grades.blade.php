@@ -1,7 +1,3 @@
-@php
-$groups = ['9СЫС-33.3', '4DD-4.12', 'AB0-B223', 'АБВ-1.23'];
-$averageGrades = ['', 4.5, 3.76, 3.6, 3];
-@endphp
 <script>
 document.addEventListener("DOMContentLoaded", function () {
     c3.generate({
@@ -41,7 +37,7 @@ document.addEventListener("DOMContentLoaded", function () {
             rotated: true,
             x: {
                 type: 'category',
-                categories: @json($groups),
+                categories: @json($categories),
                 tick: {
                     multiline: false,
                     multilineMax: 1,

@@ -1,12 +1,3 @@
-@php
-    $subjects = ['Предмет 1', 'Предмет 2', 'Предмет 3', 'Предмет 4'];
-    $grades = [
-        ['5', 12, 11, 7, 4],
-        ['4', 1, 10, 12, 9],
-        ['3', 2, 4, 3, 5],
-        ['2', 10, 0, 3, 7]
-    ];
-@endphp
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         c3.generate({
@@ -27,7 +18,7 @@
                 x: {
                     show: true,
                     type: 'category',
-                    categories: @json($subjects),
+                    categories: @json($categories),
                     tick: {
                         multiline: false,
                         multilineMax: 1,

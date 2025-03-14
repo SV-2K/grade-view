@@ -1,18 +1,9 @@
-@php
-$grades = [
-    ['5', 23],
-    ['4', 20],
-    ['3', 10],
-    ['2', 14]
-];
-@endphp
-
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         c3.generate({
             bindto: '#grades-ratio',
             data: {
-                columns: @json($grades),
+                columns: @json($gradesAmount),
                 type: 'donut',
                 order: null
             },
