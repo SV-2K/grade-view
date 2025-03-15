@@ -26,8 +26,6 @@ class ChartsDataRepository
         return $subjectId;
     }
 
-
-
     public function getGradesForEachGroup(int $subjectId): array
     {
         $data = Subject::join('grades', 'subjects.id', '=', 'grades.subject_id')

@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Subject;
 use App\Repositories\ChartsDataRepository;
+use App\Repositories\SubjectRepository;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class SubjectController extends Controller
 {
     public function __construct(
-        private ChartsDataRepository $dataRepository
+        private ChartsDataRepository $dataRepository,
+        private SubjectRepository $subjectRepository
     )
     {}
 
@@ -27,6 +27,11 @@ class SubjectController extends Controller
         return view('pages.subject')->with([
             'isEmpty' => false,
             'subject' => $subjectName,
+            'averageGrade' => $this->subjectRepository->getAverageGrade($subjectId),
+            'groupsAmount' => $this->subjectRepository->getGroupsAmount($subjectId),
+            'absolutePerformance' => $this->subjectRepository->getAbsolutePerformance($subjectId),
+            'qualityPerformance' =>$this->subjectRepository->getQualityPerformance($subjectId),
+            'studentsAmount' =>$this->subjectRepository->getStudentsAmount($subjectId),
             'categories' => $this->dataRepository->getGroups($subjectId),
             'grades' => $this->dataRepository->getGradesForEachGroup($subjectId),
             'averageGrades' => $this->dataRepository->getAverageGrades($subjectId),
