@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Subject;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class SubjectController extends Controller
 {
@@ -20,10 +21,10 @@ class SubjectController extends Controller
         return view('pages.subject')->with([
             'isEmpty' => false,
             'subject' => $subjectName,
-            'categories' => $this->getGroups(),
-            'grades' => $this->getGrades(),
-            'averageGrades' => $this->getAverageGrades(),
-            'gradesAmount' => $this->getGradesAmount(),
+            'categories' => $this->getGroups($subjectId),
+            'grades' => $this->getGradesForEachGroup($subjectId),
+            'averageGrades' => $this->getAverageGrades($subjectId),
+            'gradesAmount' => $this->getGradesAmount($subjectId),
         ]);
     }
 
@@ -31,37 +32,84 @@ class SubjectController extends Controller
     {
         $subjectId = Subject::where('name', $subjectName)
             ->value('id');
-
         return $subjectId;
     }
 
-    private function getGroups(): array
+    private function getGroups(int $subjectId): array
     {
-        return ['9СЫС-33.3', '4DD-4.12', 'AB0-B223', 'АБВ-1.23'];
+        $groups = Subject::join('grades', 'subjects.id', '=', 'grades.subject_id')
+            ->join('students', 'students.id', '=', 'grades.student_id')
+            ->join('groups', 'groups.id', '=', 'students.group_id')
+            ->where('subjects.id', $subjectId)
+            ->distinct()
+            ->pluck('groups.name')
+            ->toArray();
+        return $groups;
     }
 
-    private function getGrades(): array
+    private function getGradesForEachGroup(int $subjectId): array
     {
-        return [
-            ['5', 12, 11, 7, 4],
-            ['4', 1, 10, 12, 9],
-            ['3', 2, 4, 3, 5],
-            ['2', 10, 0, 3, 7]
+        $data = Subject::join('grades', 'subjects.id', '=', 'grades.subject_id')
+            ->join('students', 'students.id', '=', 'grades.student_id')
+            ->join('groups', 'groups.id', '=', 'students.group_id')
+            ->where('subjects.id', $subjectId)
+            ->selectRaw("
+                SUM(CASE WHEN grades.grade = 5 THEN 1 ELSE 0 END) AS grade_5,
+                SUM(CASE WHEN grades.grade = 4 THEN 1 ELSE 0 END) AS grade_4,
+                SUM(CASE WHEN grades.grade = 3 THEN 1 ELSE 0 END) AS grade_3,
+                SUM(CASE WHEN grades.grade = 2 THEN 1 ELSE 0 END) AS grade_2,
+                groups.id AS group_id
+            ")
+            ->groupBy('groups.id')
+            ->get();
+
+        $gradesForEachGroup = [
+            ['5'], ['4'], ['3'], ['2']
         ];
+
+        foreach ($data as $row) {
+            $gradesForEachGroup[0][] = $row->grade_5;
+            $gradesForEachGroup[1][] = $row->grade_4;
+            $gradesForEachGroup[2][] = $row->grade_3;
+            $gradesForEachGroup[3][] = $row->grade_2;
+        }
+
+         return $gradesForEachGroup;
     }
 
-    private function getAverageGrades():array
+    private function getAverageGrades(int $subjectId):array
     {
-        return ['', 4.5, 3.76, 3.6, 3];
+        $averageGrades = Subject::join('grades', 'subjects.id', '=', 'grades.subject_id')
+            ->join('students', 'students.id', '=', 'grades.student_id')
+            ->join('groups', 'groups.id', '=', 'students.group_id')
+            ->select(DB::raw('ROUND(AVG(`grades`.grade), 2) AS average_grade'))
+            ->where('subjects.id', $subjectId)
+            ->groupBy('groups.name')
+            ->pluck('average_grade')
+            ->toArray();
+        #chart is not working correctly without first element ot array being empty
+        array_unshift($averageGrades, '');
+        return $averageGrades;
     }
 
-    private function getGradesAmount(): array
+    private function getGradesAmount(int $subjectId): array
     {
+        $gradesAmount = Subject::join('grades', 'subjects.id', '=', 'grades.subject_id')
+            ->join('students', 'students.id', '=', 'grades.student_id')
+            ->join('groups', 'groups.id', '=', 'students.group_id')
+            ->where('subjects.id', $subjectId)
+            ->select(DB::raw(
+                'SUM(CASE WHEN `grades`.grade = 5 THEN 1 ELSE 0 END) AS grade_5,
+                SUM(CASE WHEN `grades`.grade = 4 THEN 1 ELSE 0 END) AS grade_4,
+                SUM(CASE WHEN `grades`.grade = 3 THEN 1 ELSE 0 END) AS grade_3,
+                SUM(CASE WHEN `grades`.grade = 2 THEN 1 ELSE 0 END) AS grade_2'
+            ))
+            ->first();
         return [
-            ['5', 23],
-            ['4', 20],
-            ['3', 10],
-            ['2', 14]
+            ['5', $gradesAmount->grade_5],
+            ['4', $gradesAmount->grade_4],
+            ['3', $gradesAmount->grade_3],
+            ['2', $gradesAmount->grade_2]
         ];
     }
 }

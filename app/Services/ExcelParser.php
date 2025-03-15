@@ -77,7 +77,7 @@ class ExcelParser
     {
         for ($row = $this->rowStarter; $row < 50; $row++) {
 
-            $cell = $sheet->getCell([4, $row])->getValue();
+            $cell = $sheet->getCell([3, $row])->getValue();
 
             if ($cell === NULL || $cell === 'Средний балл') {
                 $rowStopper = $row;
@@ -132,7 +132,7 @@ class ExcelParser
         ]);
     }
 
-    private function storeGrade(string|array|null $grade, int $studentId, int $subjectId): void
+    private function storeGrade(string|null $grade, int $studentId, int $subjectId): void
     {
         $grade = $this->getGradeNum($grade);
 
