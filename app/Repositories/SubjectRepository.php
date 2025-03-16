@@ -7,6 +7,12 @@ use Illuminate\Support\Facades\DB;
 
 class SubjectRepository
 {
+    public function getSubjectId(string $subjectName): int
+    {
+        $subjectId = Subject::where('name', $subjectName)
+            ->value('id');
+        return $subjectId;
+    }
     public function getAverageGrade(int $subjectId): float
     {
         $averageGrade = Subject::join('grades', 'subjects.id', '=', 'grades.subject_id')

@@ -22,7 +22,7 @@ class SubjectController extends Controller
             return view('pages.subject')->with('isEmpty', true);
         }
 
-        $subjectId = $this->dataRepository->getSubjectId($subjectName);
+        $subjectId = $this->subjectRepository->getSubjectId($subjectName);
 
         return view('pages.subject')->with([
             'isEmpty' => false,
