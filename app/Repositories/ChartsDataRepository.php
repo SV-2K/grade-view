@@ -2,61 +2,66 @@
 
 namespace App\Repositories;
 
+use App\Models\Group;
 use App\Models\Subject;
 use Illuminate\Support\Facades\DB;
 
 class ChartsDataRepository
 {
-    public function getGroups(int $subjectId): array
+    public function getCategories(string $sourceTable, string $targetTable, int $id): array
     {
+        //for example can return each subject($targetTable) that group($sourceTable) studying
+        //or each group($targetTable) that studying the group($sourceTable)
         $groups = Subject::join('grades', 'subjects.id', '=', 'grades.subject_id')
             ->join('students', 'students.id', '=', 'grades.student_id')
             ->join('groups', 'groups.id', '=', 'students.group_id')
-            ->where('subjects.id', $subjectId)
+            ->where("{$sourceTable}.id", $id)
             ->distinct()
-            ->pluck('groups.name')
+            ->pluck("{$targetTable}.name")
             ->toArray();
         return $groups;
     }
 
-    public function getGradesForEachGroup(int $subjectId): array
+    public function getGradesForEachCategory(string $mainTable, string $groupByTable, int $id): array
     {
+        // for example can return grades for each subject($groupByEntity) that the group($mainEntity) studying
+        // or for each group($groupByEntity) that that studying the subject($mainEntity)
         $data = Subject::join('grades', 'subjects.id', '=', 'grades.subject_id')
             ->join('students', 'students.id', '=', 'grades.student_id')
             ->join('groups', 'groups.id', '=', 'students.group_id')
-            ->where('subjects.id', $subjectId)
+            ->where("{$mainTable}.id", $id)
             ->selectRaw("
                 SUM(CASE WHEN grades.grade = 5 THEN 1 ELSE 0 END) AS grade_5,
                 SUM(CASE WHEN grades.grade = 4 THEN 1 ELSE 0 END) AS grade_4,
                 SUM(CASE WHEN grades.grade = 3 THEN 1 ELSE 0 END) AS grade_3,
                 SUM(CASE WHEN grades.grade = 2 THEN 1 ELSE 0 END) AS grade_2,
-                groups.id AS group_id
+                {$groupByTable}.id AS group_id
             ")
-            ->groupBy('groups.id')
+            ->groupBy("{$groupByTable}.id")
             ->get();
 
-        $gradesForEachGroup = [
+        $gradesForEachCategory = [
             ['5'], ['4'], ['3'], ['2']
         ];
 
         foreach ($data as $row) {
-            $gradesForEachGroup[0][] = $row->grade_5;
-            $gradesForEachGroup[1][] = $row->grade_4;
-            $gradesForEachGroup[2][] = $row->grade_3;
-            $gradesForEachGroup[3][] = $row->grade_2;
+            $gradesForEachCategory[0][] = $row->grade_5;
+            $gradesForEachCategory[1][] = $row->grade_4;
+            $gradesForEachCategory[2][] = $row->grade_3;
+            $gradesForEachCategory[3][] = $row->grade_2;
         }
 
-        return $gradesForEachGroup;
+        return $gradesForEachCategory;
     }
 
-    public function getAverageGrades(int $subjectId):array
+    public function getAverageGrades(string $mainTable, string $groupByTable, int $id): array
     {
         $averageGrades = Subject::join('grades', 'subjects.id', '=', 'grades.subject_id')
             ->join('students', 'students.id', '=', 'grades.student_id')
             ->join('groups', 'groups.id', '=', 'students.group_id')
             ->select(DB::raw('ROUND(AVG(`grades`.grade), 2) AS average_grade'))
-            ->where('subjects.id', $subjectId)
-            ->groupBy('groups.name')
+            ->where("$mainTable.id", $id)
+            ->groupBy("$groupByTable.name")
             ->pluck('average_grade')
             ->toArray();
         #chart is not working correctly without first element ot array being empty
@@ -64,12 +69,12 @@ class ChartsDataRepository
         return $averageGrades;
     }
 
-    public function getGradesAmount(int $subjectId): array
+    public function getGradesAmount(string $mainTable, int $id): array
     {
         $gradesAmount = Subject::join('grades', 'subjects.id', '=', 'grades.subject_id')
             ->join('students', 'students.id', '=', 'grades.student_id')
             ->join('groups', 'groups.id', '=', 'students.group_id')
-            ->where('subjects.id', $subjectId)
+            ->where("$mainTable.id", $id)
             ->select(DB::raw(
                 'SUM(CASE WHEN `grades`.grade = 5 THEN 1 ELSE 0 END) AS grade_5,
                 SUM(CASE WHEN `grades`.grade = 4 THEN 1 ELSE 0 END) AS grade_4,
@@ -83,5 +88,48 @@ class ChartsDataRepository
             ['3', $gradesAmount->grade_3],
             ['2', $gradesAmount->grade_2]
         ];
+    }
+
+    public function getAttendance(?int $groupId = null): array
+    {
+        $query = Group::join('students', 'groups.id', '=', 'students.group_id')
+            ->join('attendances', 'students.id', '=', 'attendances.student_id')
+            ->select(DB::raw(
+                'SUM(attendances.unexcused_hours) AS valid_hours,
+                SUM(attendances.excused_hours) AS invalid_hours'
+            ));
+        if ($groupId != null) {
+            $query->where('groups.id', $groupId);
+        }
+        $stmt = $query->first();
+
+        return [
+            ['Ув', $stmt->valid_hours],
+            ['Н/ув', $stmt->invalid_hours],
+        ];
+    }
+
+    public function getQualityPerformance(?int $groupId = null): array
+    {
+        $query = Group::
+        join('students', 'groups.id', '=', 'students.group_id')
+            ->join('grades', 'students.id', '=', 'grades.student_id')
+            ->join('subjects', 'subjects.id', '=', 'grades.subject_id')
+            ->selectRaw(
+                '(SUM(CASE WHEN grades.grade IN (4, 5) THEN 1 ELSE 0 END) * 100.0) /
+                SUM(CASE WHEN grades.grade IN (2, 3, 4, 5) THEN 1 ELSE 0 END) AS quality_performance'
+            );
+        if ($groupId != null) {
+            $query->where('groups.id', $groupId);
+        }
+        $stmt = $query->groupBy('subjects.id')
+            ->get();
+
+        $performance = [''];
+
+        foreach ($stmt as $row) {
+            $performance[] = $row->quality_performance;
+        }
+        return $performance;
     }
 }

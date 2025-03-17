@@ -1,8 +1,3 @@
-@php
-$subjects = ['Предмет 1', 'Предмет 2', 'Предмет 3', 'Предмет 4', 'Предмет 5', 'Предмет 6', 'Предмет 7', 'Предмет 8',];
-$performance = ['', 92.33, 90, 85.4, 80.66, 61.33, 55, 47.9, 44.9];
-@endphp
-
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         c3.generate({
@@ -37,7 +32,7 @@ $performance = ['', 92.33, 90, 85.4, 80.66, 61.33, 55, 47.9, 44.9];
                 rotated: true,
                 x: {
                     type: 'category',
-                    categories: @json($subjects),
+                    categories: @json($categories),
                     tick: {
                         multiline: false,
                         multilineMax: 1,

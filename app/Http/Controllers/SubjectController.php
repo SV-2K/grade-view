@@ -32,10 +32,10 @@ class SubjectController extends Controller
             'absolutePerformance' => $this->subjectRepository->getAbsolutePerformance($subjectId),
             'qualityPerformance' =>$this->subjectRepository->getQualityPerformance($subjectId),
             'studentsAmount' =>$this->subjectRepository->getStudentsAmount($subjectId),
-            'categories' => $this->dataRepository->getGroups($subjectId),
-            'grades' => $this->dataRepository->getGradesForEachGroup($subjectId),
-            'averageGrades' => $this->dataRepository->getAverageGrades($subjectId),
-            'gradesAmount' => $this->dataRepository->getGradesAmount($subjectId),
+            'categories' => $this->dataRepository->getCategories('subjects', 'groups', $subjectId),
+            'grades' => $this->dataRepository->getGradesForEachCategory('subjects', 'groups',$subjectId),
+            'averageGrades' => $this->dataRepository->getAverageGrades('subjects', 'groups', $subjectId),
+            'gradesAmount' => $this->dataRepository->getGradesAmount('subjects', $subjectId),
         ]);
     }
 }

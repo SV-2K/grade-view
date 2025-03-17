@@ -1,9 +1,3 @@
-@php
-$attendance = [
-     ['Ув', 23],
-     ['Н/ув', 55]
- ];
-@endphp
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         c3.generate({
