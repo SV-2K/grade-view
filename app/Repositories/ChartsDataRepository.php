@@ -8,15 +8,17 @@ use Illuminate\Support\Facades\DB;
 
 class ChartsDataRepository
 {
-    public function getCategories(string $sourceTable, string $targetTable, int $id): array
+    public function getCategories(string $targetTable, ?string $sourceTable = null, ?int $id = null): array
     {
         //for example can return each subject($targetTable) that group($sourceTable) studying
         //or each group($targetTable) that studying the group($sourceTable)
-        $groups = Subject::join('grades', 'subjects.id', '=', 'grades.subject_id')
+        $query = Subject::join('grades', 'subjects.id', '=', 'grades.subject_id')
             ->join('students', 'students.id', '=', 'grades.student_id')
-            ->join('groups', 'groups.id', '=', 'students.group_id')
-            ->where("{$sourceTable}.id", $id)
-            ->distinct()
+            ->join('groups', 'groups.id', '=', 'students.group_id');
+        if ($sourceTable != null || $id != null) {
+            $query->where("{$sourceTable}.id", $id);
+        }
+        $groups = $query->distinct()
             ->pluck("{$targetTable}.name")
             ->toArray();
         return $groups;
@@ -54,14 +56,16 @@ class ChartsDataRepository
         return $gradesForEachCategory;
     }
 
-    public function getAverageGrades(string $mainTable, string $groupByTable, int $id): array
+    public function getAverageGrades(string $groupByTable, ?string $mainTable = null, ?int $id = null): array
     {
-        $averageGrades = Subject::join('grades', 'subjects.id', '=', 'grades.subject_id')
+        $query = Subject::join('grades', 'subjects.id', '=', 'grades.subject_id')
             ->join('students', 'students.id', '=', 'grades.student_id')
             ->join('groups', 'groups.id', '=', 'students.group_id')
-            ->select(DB::raw('ROUND(AVG(`grades`.grade), 2) AS average_grade'))
-            ->where("$mainTable.id", $id)
-            ->groupBy("$groupByTable.name")
+            ->select(DB::raw('ROUND(AVG(`grades`.grade), 2) AS average_grade'));
+            if ($mainTable != null || $id != null) {
+                $query->where("$mainTable.id", $id);
+            }
+            $averageGrades = $query->groupBy("$groupByTable.name")
             ->pluck('average_grade')
             ->toArray();
         #chart is not working correctly without first element ot array being empty
@@ -69,7 +73,7 @@ class ChartsDataRepository
         return $averageGrades;
     }
 
-    public function getGradesAmount(?string $mainTable = null, int $id): array
+    public function getGradesAmount(?string $mainTable = null, ?int $id = null): array
     {
         $query = Subject::join('grades', 'subjects.id', '=', 'grades.subject_id')
             ->join('students', 'students.id', '=', 'grades.student_id')

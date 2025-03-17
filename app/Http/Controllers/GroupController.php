@@ -23,7 +23,7 @@ class GroupController extends Controller
         }
 
         $groupId = $this->groupRepository->getGroupId($groupName);
-        $subjects = $this->dataRepository->getCategories('groups', 'subjects', $groupId);
+        $subjects = $this->dataRepository->getCategories('subjects', 'groups', $groupId);
 
         return view('pages.group')->with([
             'isEmpty' => false,
