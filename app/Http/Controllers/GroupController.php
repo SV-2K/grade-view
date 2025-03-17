@@ -23,6 +23,7 @@ class GroupController extends Controller
         }
 
         $groupId = $this->groupRepository->getGroupId($groupName);
+        $subjects = $this->dataRepository->getCategories('groups', 'subjects', $groupId);
 
         return view('pages.group')->with([
             'isEmpty' => false,
@@ -32,7 +33,8 @@ class GroupController extends Controller
             'qualityPerformance' =>$this->groupRepository->getQualityPerformance($groupId),
             'studentsAmount' =>$this->groupRepository->getStudentsAmount($groupId),
             'grades' => $this->dataRepository->getGradesForEachCategory('groups', 'subjects', $groupId),
-            'categories' => $this->dataRepository->getCategories('groups', 'subjects', $groupId),
+            'qualityPerformanceCategories' => $subjects,
+            'gradeDistributionCategories' => $subjects,
             'gradesAmount' => $this->dataRepository->getGradesAmount('groups', $groupId),
             'attendance' => $this->dataRepository->getAttendance($groupId),
             'performance' => $this->dataRepository->getQualityPerformance($groupId)

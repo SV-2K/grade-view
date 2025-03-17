@@ -23,6 +23,7 @@ class SubjectController extends Controller
         }
 
         $subjectId = $this->subjectRepository->getSubjectId($subjectName);
+        $groups = $this->dataRepository->getCategories('subjects', 'groups', $subjectId);
 
         return view('pages.subject')->with([
             'isEmpty' => false,
@@ -32,7 +33,8 @@ class SubjectController extends Controller
             'absolutePerformance' => $this->subjectRepository->getAbsolutePerformance($subjectId),
             'qualityPerformance' =>$this->subjectRepository->getQualityPerformance($subjectId),
             'studentsAmount' =>$this->subjectRepository->getStudentsAmount($subjectId),
-            'categories' => $this->dataRepository->getCategories('subjects', 'groups', $subjectId),
+            'gradeDistributionCategories' => $groups,
+            'averageGradesCategories' => $groups,
             'grades' => $this->dataRepository->getGradesForEachCategory('subjects', 'groups',$subjectId),
             'averageGrades' => $this->dataRepository->getAverageGrades('subjects', 'groups', $subjectId),
             'gradesAmount' => $this->dataRepository->getGradesAmount('subjects', $subjectId),

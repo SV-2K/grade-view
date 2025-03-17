@@ -69,19 +69,20 @@ class ChartsDataRepository
         return $averageGrades;
     }
 
-    public function getGradesAmount(string $mainTable, int $id): array
+    public function getGradesAmount(?string $mainTable = null, int $id): array
     {
-        $gradesAmount = Subject::join('grades', 'subjects.id', '=', 'grades.subject_id')
+        $query = Subject::join('grades', 'subjects.id', '=', 'grades.subject_id')
             ->join('students', 'students.id', '=', 'grades.student_id')
-            ->join('groups', 'groups.id', '=', 'students.group_id')
-            ->where("$mainTable.id", $id)
-            ->select(DB::raw(
+            ->join('groups', 'groups.id', '=', 'students.group_id');
+        if ($mainTable != null) {
+            $query->where("$mainTable.id", $id);
+        }
+        $gradesAmount = $query->select(DB::raw(
                 'SUM(CASE WHEN `grades`.grade = 5 THEN 1 ELSE 0 END) AS grade_5,
                 SUM(CASE WHEN `grades`.grade = 4 THEN 1 ELSE 0 END) AS grade_4,
                 SUM(CASE WHEN `grades`.grade = 3 THEN 1 ELSE 0 END) AS grade_3,
                 SUM(CASE WHEN `grades`.grade = 2 THEN 1 ELSE 0 END) AS grade_2'
-            ))
-            ->first();
+            ))->first();
         return [
             ['5', $gradesAmount->grade_5],
             ['4', $gradesAmount->grade_4],

@@ -32,7 +32,7 @@
                 rotated: true,
                 x: {
                     type: 'category',
-                    categories: @json($categories),
+                    categories: @json($qualityPerformanceCategories),
                     tick: {
                         multiline: false,
                         multilineMax: 1,

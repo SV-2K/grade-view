@@ -18,7 +18,7 @@
                 x: {
                     show: true,
                     type: 'category',
-                    categories: @json($categories),
+                    categories: @json($gradeDistributionCategories),
                     tick: {
                         multiline: false,
                         multilineMax: 1,

@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", function () {
             rotated: true,
             x: {
                 type: 'category',
-                categories: @json($categories),
+                categories: @json($averageGradesCategories),
                 tick: {
                     multiline: false,
                     multilineMax: 1,
