@@ -40,7 +40,7 @@
                     </div>
                 </div>
                 <div class="row m-0 mt-4 p-0">
-                    <div id="average-grades" class="section" style="height: 300px;">
+                    <div id="average-grades" class="section" style="height: 1000px;">
                         @include('charts.average-grades')
                         dsd
                     </div>

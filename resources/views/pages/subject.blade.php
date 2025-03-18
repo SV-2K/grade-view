@@ -2,7 +2,7 @@
 
 @section('main')
     <div class="top-section">
-        <h3 class="m-0 section">
+        <h3 class="m-0 name section">
             @php
                 echo $subject ?? 'Предмет не выбран...';
             @endphp

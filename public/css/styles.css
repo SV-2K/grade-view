@@ -9,6 +9,12 @@ body {
     background-color: var(--accent-color);
 }
 
+.name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .main {
     background-color: var(--light-accent);
     padding: 2rem;
