@@ -12,8 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('grades', function (Blueprint $table) {
-            $table->unsignedBigInteger('student_id');
-            $table->unsignedBigInteger('subject_id');
+            $table->foreignId('student_id')
+                ->constrained()
+                ->cascadeOnDelete();
+            $table->foreignId('subject_id')
+                ->constrained()
+                ->cascadeOnDelete();
             $table->tinyInteger('grade');
         });
     }
