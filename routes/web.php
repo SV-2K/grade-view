@@ -6,6 +6,8 @@ use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\CollegeController;
 use App\Http\Controllers\SubjectController;
+use App\Http\Controllers\User\RegisterController;
+use App\Http\Controllers\User\LoginController;
 use Illuminate\Http\Request;
 
 Route::get('/', [GroupController::class, 'show']);
@@ -20,6 +22,12 @@ Route::post('/monitoring-upload', [UploadController::class, 'uploadMonitoring'])
 
 Route::get('/feedback', [FeedbackController::class, 'create'])->name('feedback');
 Route::post('/feedback', [FeedbackController::class, 'store'])->name('feedback.send');
+
+Route::get('/register', [RegisterController::class, 'index'])->name('register.form');
+Route::post('/register', [RegisterController::class, 'register'])->name('register.action');
+
+Route::get('/login', [LoginController::class, 'index'])->name('login.form');
+Route::post('/login', [LoginController::class, 'login'])->name('login.action');
 
 Route::middleware([
     'auth:sanctum',

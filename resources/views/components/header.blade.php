@@ -61,6 +61,8 @@
                 </li>
             </ul>
         </div>
-        <a class="nav-link" href="{{ route('upload.page') }}">Загрузить</a>
+        <a class="nav-link m-lg-1" href="{{ route('register.form') }}">Регистрация</a>
+        <a class="nav-link m-lg-1" href="{{ route('login.form') }}">Логин</a>
+        <a class="nav-link m-lg-1" href="{{ route('upload.page') }}">Загрузить</a>
     </div>
 </nav>
