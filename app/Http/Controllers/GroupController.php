@@ -23,6 +23,11 @@ class GroupController extends Controller
         }
 
         $groupId = $this->groupRepository->getGroupId($groupName);
+
+        if (is_null($groupId)) {
+            return redirect()->route('group');
+        }
+
         $subjects = $this->dataRepository->getCategories('subjects', 'groups', $groupId);
 
         return view('pages.group')->with([

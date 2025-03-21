@@ -18,11 +18,16 @@ class SubjectController extends Controller
     {
         $subjectName = $request->input('name');
 
-        if(is_null($subjectName)) {
+        if (is_null($subjectName)) {
             return view('pages.subject')->with('isEmpty', true);
         }
 
         $subjectId = $this->subjectRepository->getSubjectId($subjectName);
+
+        if (is_null($subjectId)) {
+            return redirect()->route('subject');
+        }
+
         $groups = $this->dataRepository->getCategories('groups', 'subjects', $subjectId);
 
         return view('pages.subject')->with([

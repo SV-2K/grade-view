@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class SubjectRepository
 {
-    public function getSubjectId(string $subjectName): int
+    public function getSubjectId(string $subjectName): int|null
     {
         $subjectId = Subject::where('name', $subjectName)
             ->value('id');
