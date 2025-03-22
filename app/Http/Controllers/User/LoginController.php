@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\LoginRequest;
 
 class LoginController extends Controller
 {
@@ -11,8 +12,18 @@ class LoginController extends Controller
         return view('pages.login');
     }
 
-    public function login()
+    public function login(LoginRequest $request)
     {
-
+        if (
+            auth()->attempt([
+                'email' => $request->input('email'),
+                'password' => $request->input('password')
+            ], true)
+        )
+        {
+            return redirect('/');
+        } else {
+            return redirect()->back()->with('error', 'Неправильный логин или пароль');
+        }
     }
 }
