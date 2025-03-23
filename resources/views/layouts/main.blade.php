@@ -20,8 +20,8 @@
         </header>
         <main>
             @include('components.top-section')
-            <div class="row d-flex">
-                <div class="col-3 me-3">
+            <div class="row d-flex mb-4">
+                <div class="col-3 me-5">
                     @include('components.side-menu')
                 </div>
                 <div class="col-6 text-center p-0">
