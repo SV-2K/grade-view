@@ -14,13 +14,22 @@
     <title>Document</title>
 </head>
 <body>
-    <div class="container">
+    <div class="">
         <header>
             @include('components.header')
         </header>
         <main>
-            <div class="main container mt-5">
-                @yield('main')
+            @include('components.top-section')
+            <div class="row d-flex">
+                <div class="col-3 me-3">
+                    @include('components.side-menu')
+                </div>
+                <div class="col-6 text-center p-0">
+                    @yield('main')
+                </div>
+                <div class="col-3">
+
+                </div>
             </div>
         </main>
     </div>

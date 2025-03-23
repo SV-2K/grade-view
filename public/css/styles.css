@@ -6,7 +6,7 @@
 }
 
 body {
-    background-color: var(--accent-color);
+    background-color: var(--light-accent);
 }
 
 .name {
@@ -15,10 +15,8 @@ body {
     text-overflow: ellipsis;
 }
 
-.main {
-    background-color: var(--light-accent);
-    padding: 2rem;
-    border-radius: 3rem;
+main {
+    margin-top: 2rem;
 }
 
 .info-section {
@@ -32,6 +30,7 @@ body {
 .section {
     color: var(--dark-shades);
     padding: 0.25rem 1rem;
+    text-decoration: none;
     border-radius: 20px;
     background: #eaecf6;
     box-shadow:  10px 10px 20px #c7c9d1,
@@ -40,6 +39,17 @@ body {
 
 .top-section {
     display: flex;
+    gap: 1.5rem;
+}
+
+.side-button {
+    display: block;
+    font-size: 1.75rem;
+}
+
+.side-menu {
+    display: flex;
+    flex-direction: column;
     gap: 1.5rem;
 }
 
