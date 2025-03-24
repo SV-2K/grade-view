@@ -8,6 +8,7 @@ use App\Http\Controllers\CollegeController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\User\RegisterController;
 use App\Http\Controllers\User\LoginController;
+use App\Http\Controllers\User\ProfileController;
 use Illuminate\Http\Request;
 
 Route::get('/', [GroupController::class, 'show']);
@@ -28,6 +29,8 @@ Route::post('/register', [RegisterController::class, 'register'])->name('registe
 
 Route::get('/login', [LoginController::class, 'index'])->name('login.form');
 Route::post('/login', [LoginController::class, 'login'])->name('login.action');
+
+Route::get('/profile', [ProfileController::class, 'profile'])->name('profile');
 
 Route::middleware([
     'auth:sanctum',

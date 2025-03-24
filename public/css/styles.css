@@ -37,6 +37,16 @@ main {
     -10px -10px 20px #ffffff;
 }
 
+.section-inward {
+    color: var(--dark-shades);
+    padding: 1.25rem 1rem;
+    text-decoration: none;
+    border-radius: 20px;
+    background: #eaecf6;
+    box-shadow: inset 10px 10px 20px #c7c9d1,
+    inset -10px -10px 20px #ffffff;
+}
+
 .top-section {
     display: flex;
     gap: 1.5rem;
