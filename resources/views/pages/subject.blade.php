@@ -2,11 +2,11 @@
 
 @section('main')
     @if($isEmpty)
-        <div class="row text-center section" style="height: 300px">
+        <div class="row text-center section m-0 me-4" style="height: 300px">
             <h1 class="m-auto">Выберите предмет...</h1>
         </div>
     @else
-        <div class="row">
+        <div class="row container-fluid">
             <div class="col-8 p-0 pe-4">
                 <div id="average-grades" class="section h-50 p-0">
                     @include('charts.average-grades')

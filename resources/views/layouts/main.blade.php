@@ -15,19 +15,19 @@
 </head>
 <body>
     <div class="">
-        <header>
-            @include('components.header')
-        </header>
+{{--        <header>--}}
+{{--            @include('components.header')--}}
+{{--        </header>--}}
         <main>
-            @include('components.top-section')
-            <div class="row d-flex mb-4">
-                <div class="col-3 me-5">
+            <div class="d-flex mb-4 px-4">
+                <div class="flex-grow-1">
                     @include('components.side-menu')
                 </div>
-                <div class="col-6 text-center p-0">
+                <div class="container center mx-3 p-0" style="width: 1000px">
+                    @include('components.top-section')
                     @yield('main')
                 </div>
-                <div class="col-3">
+                <div class="flex-grow-1">
 
                 </div>
             </div>

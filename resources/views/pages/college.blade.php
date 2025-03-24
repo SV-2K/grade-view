@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
 @section('main')
-    <div class="row gap-4">
+    <div class="row gap-4 container-fluid">
         <div id="quality-performance" class="section col-7">
             @include('charts.quality-performance')
         </div>

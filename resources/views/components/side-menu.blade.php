@@ -3,7 +3,7 @@
     $subjects = \App\Models\Subject::all()->pluck('name');
 @endphp
 
-<div class="col-6 ms-auto side-menu">
+<div class="ms-auto side-menu me-2">
 
     <a href="{{ route('college') }}" class="section side-button @if(request()->is('college')) side-button-active @endif">
         Общее
