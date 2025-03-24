@@ -88,7 +88,7 @@ main {
     inset -10px -10px 20px #ffffff;
 }
 
-.search-bar {
+.input-bar {
     border: none;
     outline: none;
     border-radius: 20px;
@@ -99,8 +99,9 @@ main {
     transition: 300ms ease-in-out;
 }
 
-.search-bar:focus {
-    transform: scale(1.05);
+.input-bar:focus {
+    color: var(--dark-shades);
+    transform: scale(1.02);
     box-shadow:  10px 10px 20px #c7c9d1,
     -10px -10px 20px #ffffff;
 }
@@ -120,4 +121,8 @@ main {
     transform: scale(1.05);
     box-shadow: inset 10px 10px 20px #c7c9d1,
     inset -10px -10px 20px #ffffff;
+}
+
+.link {
+    color: var(--dark-shades);
 }
