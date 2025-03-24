@@ -19,7 +19,7 @@ class ExcelParser
 
     public function run($monitoringFile)
     {
-        ini_set('memory_limit', '250M');
+        ini_set('memory_limit', '500M');
 
         $spreadsheet = IOFactory::load($monitoringFile);
 
@@ -58,22 +58,21 @@ class ExcelParser
         }
     }
 
-    private function getColumnStopper($sheet): int|null
+    private function getColumnStopper($sheet): int
     {
         for ($column = $this->columnStarter; $column < 20; $column++) {
 
             $cell = $sheet->getCell([$column, 14])->getValue();
 
-            if ($cell === NULL) {
+            if ($cell === NULL || str_contains($cell, 'Всего')) {
                 $columnStopper = $column;
                 break;
             }
         }
-        return $columnStopper ?? NULL;
-
+        return $columnStopper;
     }
 
-    private function getRowStopper($sheet): int|null
+    private function getRowStopper($sheet): int
     {
         for ($row = $this->rowStarter; $row < 50; $row++) {
 
@@ -84,7 +83,7 @@ class ExcelParser
                 break;
             }
         }
-        return $rowStopper ?? NULL;
+        return $rowStopper;
     }
 
     private function storeGroup(string $name): int
