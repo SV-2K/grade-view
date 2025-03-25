@@ -29,6 +29,7 @@ Route::post('/register', [RegisterController::class, 'register'])->name('registe
 
 Route::get('/login', [LoginController::class, 'index'])->name('login.form');
 Route::post('/login', [LoginController::class, 'login'])->name('login.action');
+Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::get('/profile', [ProfileController::class, 'profile'])->name('profile');
 

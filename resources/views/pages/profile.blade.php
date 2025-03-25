@@ -8,7 +8,7 @@
     </div>
     <a href="{{ route('monitoring.upload') }}" class="section">Загрузить мониторинг</a>
     <div class="section-inward d-flex flex-column gap-4 mt-3">
-        <a href="" class="section">Пример мониторинга...</a>
+        <a href="{{ route('college') }}" class="section">Пример мониторинга...</a>
         <a href="" class="section">Пример мониторинга...</a>
         <a href="" class="section">Пример мониторинга...</a>
     </div>

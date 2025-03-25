@@ -4,7 +4,11 @@
 @endphp
 
 <div class="ms-auto side-menu me-2">
-
+    @if(auth()->check())
+        <a href="{{ route('profile') }}" class="section side-button">
+            &#8592; Вернуться в профиль
+        </a>
+    @endif
     <a href="{{ route('college') }}" class="section side-button @if(request()->is('college')) side-button-active @endif">
         Общее
     </a>

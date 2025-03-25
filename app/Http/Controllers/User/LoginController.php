@@ -21,9 +21,16 @@ class LoginController extends Controller
             ], true)
         )
         {
-            return redirect('/');
+            return redirect(route('profile'));
         } else {
             return redirect()->back()->with('error', 'Неправильный логин или пароль');
         }
+    }
+
+    public function logout()
+    {
+        auth()->logout();
+
+        return redirect(route('login.form'));
     }
 }
