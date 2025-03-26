@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UploadRequest;
 use Illuminate\Http\Request;
 use App\Services\ExcelParser;
 
@@ -17,15 +18,11 @@ class UploadController extends Controller
         return view('pages.upload');
     }
 
-    public function uploadMonitoring(Request $request)
+    public function uploadMonitoring(UploadRequest $request)
     {
-        $request->validate([
-            'monitoring' => ['required', 'extensions:xlsx,xls,xml']
-        ]);
+        $this->excelParser->run($request->file('uploadFiles')->getRealPath());
 
-        $this->excelParser->run($request->file('monitoring')->getRealPath());
-
-        $request->file('monitoring')->store('/uploaded');
+        $request->file('uploadFiles')->store('/uploaded');
 
         return redirect(route('group'));
     }
