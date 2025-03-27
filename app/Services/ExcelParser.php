@@ -17,30 +17,30 @@ class ExcelParser
     # Все те слова, которые будут считаться за оценку 5
     private array $gradeFiveKeywords = ['зач', 'зач.', 'осв', 'отл', 'отч'];
 
-    public function run($monitoringFile)
+    public function run(string $monitoringFilePath, int $monitoringId): void
     {
         ini_set('memory_limit', '500M');
 
-        $spreadsheet = IOFactory::load($monitoringFile);
+        $spreadsheet = IOFactory::load($monitoringFilePath);
 
         foreach ($spreadsheet->getAllSheets() as $workSheet) {
             $rowStopper = $this->getRowStopper($workSheet);
             $columnStopper = $this->getColumnStopper($workSheet);
-            $this->processData($workSheet, $rowStopper, $columnStopper);
+            $this->processData($monitoringId, $workSheet, $rowStopper, $columnStopper);
         }
     }
 
-    private function processData($workSheet, $rowStopper, $columnStopper)
+    private function processData(int $monitoringId, $workSheet, int $rowStopper, int $columnStopper): void
     {
         $studentIds = [];
 
         $groupName = $workSheet->getTitle();
-        $groupId = $this->storeGroup($groupName);
+        $groupId = $this->storeGroup($groupName, $monitoringId);
 
         for ($column = $this->columnStarter; $column < $columnStopper; $column++) {
 
             $subjectName = $workSheet->getCell([$column, 14])->getValue();
-            $subjectId = $this->storeSubject($subjectName);
+            $subjectId = $this->storeSubject($subjectName, $monitoringId);
 
             for ($row = $this->rowStarter; $row < $rowStopper; $row++) {
                 if (!isset($studentIds[$row])) {
@@ -86,10 +86,11 @@ class ExcelParser
         return $rowStopper;
     }
 
-    private function storeGroup(string $name): int
+    private function storeGroup(string $name, int $monitoringId): int
     {
         $group = Group::create([
-            'name' => $name
+            'name' => $name,
+            'monitoring_id' => $monitoringId,
         ]);
 
         return $group->id;
@@ -105,13 +106,14 @@ class ExcelParser
         return $student->id;
     }
 
-    private function storeSubject(string $name): int
+    private function storeSubject(string $name, int $monitoringId): int
     {
         $subjectId = $this->getSubjectId($name);
 
         if (NULL == $subjectId) {
             $subject = Subject::create([
-                'name' => $name
+                'name' => $name,
+                'monitoring_id' => $monitoringId
             ]);
 
             return $subject->id;

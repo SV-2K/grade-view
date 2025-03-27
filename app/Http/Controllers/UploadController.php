@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UploadRequest;
+use App\Models\Monitoring;
 use Illuminate\Http\Request;
 use App\Services\ExcelParser;
 
@@ -20,9 +21,17 @@ class UploadController extends Controller
 
     public function uploadMonitoring(UploadRequest $request)
     {
-        $this->excelParser->run($request->file('uploadFiles')->getRealPath());
+        $id = Monitoring::create([
+            'name' => $request->input('name'),
+            'start_date' => $request->input('start-date'),
+            'end_date' => $request->input('end-date'),
+        ])->id;
 
-        $request->file('uploadFiles')->store('/uploaded');
+        $filePath = $request->file('uploaded-files')->getRealPath();
+
+        $this->excelParser->run($filePath, $id);
+
+        $request->file('uploaded-files')->store('/uploaded');
 
         return redirect(route('group'));
     }
