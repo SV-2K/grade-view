@@ -14,27 +14,27 @@
             @enderror
         </div>
         <div class="mb-3">
-            <label for="startDate" class="form-label">Дата начала мониторинга</label>
-            <input class="form-control @error('startDate') is-invalid @enderror" type="date" value="{{ old('startDate') }}" name="startDate" id="startDate">
-            @error('startDate')
-            <div class="invalid-feedback">
-                {{ $message }}
-            </div>
-            @enderror
-        </div>
-        <div class="mb-3">
-            <label for="endDate" class="form-label">Дата окончания мониторинга</label>
-            <input class="form-control @error('endDate') is-invalid @enderror" type="date" value="{{ old('endDate') }}" name="endDate" id="endDate">
-            @error('endDate')
-            <div class="invalid-feedback">
-                {{ $message }}
-            </div>
-            @enderror
-        </div>
-        <div class="mb-3">
-            <label for="uploadFiles" class="form-label">Выберите файл(ы) мониторинга</label>
-            <input class="form-control @error('uploadFiles') is-invalid @enderror" type="file" name="uploadFiles" id="uploadFiles">
+            <label for="start-date" class="form-label">Дата начала мониторинга</label>
+            <input class="form-control @error('start-date') is-invalid @enderror" type="date" value="{{ old('start-date') }}" name="start-date" id="start-date">
             @error('uploadFiles')
+            <div class="invalid-feedback">
+                {{ $message }}
+            </div>
+            @enderror
+        </div>
+        <div class="mb-3">
+            <label for="end-date" class="form-label">Дата окончания мониторинга</label>
+            <input class="form-control @error('end-date') is-invalid @enderror" type="date" value="{{ old('end-date') }}" name="end-date" id="end-date">
+            @error('uploadFiles')
+            <div class="invalid-feedback">
+                {{ $message }}
+            </div>
+            @enderror
+        </div>
+        <div class="mb-3">
+            <label for="uploaded-files" class="form-label">Выберите файл(ы) мониторинга</label>
+            <input class="form-control @error('uploaded-files') is-invalid @enderror" type="file" name="uploaded-files" id="uploaded-files">
+            @error('uploaded-files')
                 <div class="invalid-feedback">
                     {{ $message }}
                 </div>
