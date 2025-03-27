@@ -1,5 +1,4 @@
 @extends('layouts.medium-window')
-
 @section('main')
     <h1>Профиль</h1>
     <div class="mb-4">

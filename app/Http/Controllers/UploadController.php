@@ -23,6 +23,7 @@ class UploadController extends Controller
     {
         $id = Monitoring::create([
             'name' => $request->input('name'),
+            'user_id' => auth()->id(),
             'start_date' => $request->input('start-date'),
             'end_date' => $request->input('end-date'),
         ])->id;
