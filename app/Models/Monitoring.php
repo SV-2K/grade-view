@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Monitoring extends Model
 {
-    protected $fillable = ['name', 'start_date', 'end_date'];
+    protected $fillable = ['name', 'user_id', 'start_date', 'end_date'];
 
     public function user(): BelongsTo
     {

@@ -7,8 +7,10 @@
     </div>
     <a href="{{ route('monitoring.upload') }}" class="section">Загрузить мониторинг</a>
     <div class="section-inward d-flex flex-column gap-4 mt-3">
-        <a href="{{ route('college') }}" class="section">Пример мониторинга...</a>
-        <a href="" class="section">Пример мониторинга...</a>
-        <a href="" class="section">Пример мониторинга...</a>
+        @foreach($monitorings as $monitoring)
+            <a href="{{ route('college', ['monitoring' => $monitoring['id']]) }}" class="section">
+                {{ $monitoring['name'] }} (с {{ $monitoring['start_date'] }} по {{ $monitoring['end_date'] }})
+            </a>
+        @endforeach
     </div>
 @endsection

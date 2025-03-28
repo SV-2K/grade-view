@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Monitoring;
 use App\Repositories\ChartsDataRepository;
 use App\Repositories\SubjectRepository;
 use Illuminate\Http\Request;
@@ -14,12 +15,15 @@ class SubjectController extends Controller
     )
     {}
 
-    public function show(Request $request)
+    public function show(Request $request, Monitoring $monitoring)
     {
         $subjectName = $request->input('name');
 
         if (is_null($subjectName)) {
-            return view('pages.subject')->with('isEmpty', true);
+            return view('pages.subject')->with([
+                'isEmpty' => true,
+                'monitoring' => $monitoring
+            ]);
         }
 
         $subjectId = $this->subjectRepository->getSubjectId($subjectName);
@@ -32,6 +36,7 @@ class SubjectController extends Controller
 
         return view('pages.subject')->with([
             'isEmpty' => false,
+            'monitoring' => $monitoring,
             'subject' => $subjectName,
             'averageGrade' => $this->subjectRepository->getAverageGrade($subjectId),
             'groupsAmount' => $this->subjectRepository->getGroupsAmount($subjectId),

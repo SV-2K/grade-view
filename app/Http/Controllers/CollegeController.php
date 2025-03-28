@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Monitoring;
 use App\Repositories\ChartsDataRepository;
 use App\Repositories\CollegeRepository;
 use Illuminate\Http\Request;
@@ -14,9 +15,10 @@ class CollegeController extends Controller
     )
     {}
 
-    public function show()
+    public function show(Monitoring $monitoring)
     {
         return view('pages.college')->with([
+            'monitoring' => $monitoring,
             'averageGrade' => $this->collegeRepository->getAverageGrade(),
             'absolutePerformance' => $this->collegeRepository->getAbsolutePerformance(),
             'qualityPerformance' => $this->collegeRepository->getQualityPerformance(),

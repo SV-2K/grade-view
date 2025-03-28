@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Monitoring;
 use App\Repositories\ChartsDataRepository;
 use App\Repositories\GroupRepository;
 use Illuminate\Http\Request;
@@ -14,12 +15,15 @@ class GroupController extends Controller
     )
     {}
 
-    public function show(Request $request)
+    public function show(Request $request, Monitoring $monitoring)
     {
         $groupName = $request->input('name');
 
         if (is_null($groupName)) {
-            return view('pages.group')->with(['isEmpty' => true]);
+            return view('pages.group')->with([
+                'isEmpty' => true,
+                'monitoring' => $monitoring
+            ]);
         }
 
         $groupId = $this->groupRepository->getGroupId($groupName);
@@ -32,6 +36,7 @@ class GroupController extends Controller
 
         return view('pages.group')->with([
             'isEmpty' => false,
+            'monitoring' => $monitoring,
             'group' => $request->input('name'),
             'averageGrade' => $this->groupRepository->getAverageGrade($groupId),
             'absolutePerformance' => $this->groupRepository->getAbsolutePerformance($groupId),
@@ -42,7 +47,7 @@ class GroupController extends Controller
             'gradeDistributionCategories' => $subjects,
             'gradesAmount' => $this->dataRepository->getGradesAmount('groups', $groupId),
             'attendance' => $this->dataRepository->getAttendance($groupId),
-            'performance' => $this->dataRepository->getQualityPerformance($groupId)
+            'performance' => $this->dataRepository->getQualityPerformance($groupId),
         ]);
     }
 }

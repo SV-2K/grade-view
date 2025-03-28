@@ -34,6 +34,6 @@ class UploadController extends Controller
 
         $request->file('uploaded-files')->store('/uploaded');
 
-        return redirect(route('group'));
+        return redirect(route('profile'));
     }
 }

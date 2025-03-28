@@ -3,12 +3,19 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Models\Monitoring;
 use Illuminate\Http\Request;
 
 class ProfileController extends Controller
 {
     public function profile()
     {
-        return view('pages.profile');
+        $monitorings = $this->getMonitorings();
+        return view('pages.profile')->with('monitorings', $monitorings);
+    }
+
+    private function getMonitorings():array
+    {
+        return Monitoring::whereUserId(auth()->id())->get()->toArray();
     }
 }
