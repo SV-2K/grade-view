@@ -47,6 +47,11 @@ main {
     inset -10px -10px 20px #ffffff;
 }
 
+.label {
+    color: var(--dark-shades);
+    text-decoration: none;
+}
+
 .top-section {
     display: flex;
     gap: 1.5rem;

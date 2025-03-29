@@ -18,4 +18,11 @@ class ProfileController extends Controller
     {
         return Monitoring::whereUserId(auth()->id())->get()->toArray();
     }
+
+    public function deleteMonitoring(int $id)
+    {
+        $monitoring = Monitoring::findOrFail($id);
+        $monitoring->delete();
+        return redirect()->route('profile');
+    }
 }

@@ -32,6 +32,7 @@ Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::get('/', [ProfileController::class, 'profile']);
 Route::get('/profile', [ProfileController::class, 'profile'])->name('profile');
+Route::post('/monitoring-delete/{id}', [ProfileController::class, 'deleteMonitoring'])->name('monitoring.delete');
 
 Route::middleware([
     'auth:sanctum',
