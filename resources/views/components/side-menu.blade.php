@@ -1,7 +1,7 @@
 @php
     use Illuminate\Support\Facades\Route;
-    $groups = \App\Models\Group::all()->pluck('name');
-    $subjects = \App\Models\Subject::all()->pluck('name');
+    $groups = \App\Models\Group::whereMonitoringId($monitoring->id)->pluck('name');
+    $subjects = \App\Models\Subject::whereMonitoringId($monitoring->id)->pluck('name');
 @endphp
 
 <div class="ms-auto side-menu me-2">

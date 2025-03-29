@@ -8,15 +8,24 @@ use Illuminate\Support\Facades\DB;
 
 class ChartsDataRepository
 {
-    public function getCategories(string $targetTable, ?string $sourceTable = null, ?int $id = null): array
+    public function getCategories(
+        string $targetTable,
+        ?string $sourceTable = null,
+        ?int $id = null,
+        ?int $monitoringId = null
+    ): array
     {
         //for example can return each subject($targetTable) that group($sourceTable) studying
         //or each group($targetTable) that studying the group($sourceTable)
-        $query = Subject::join('grades', 'subjects.id', '=', 'grades.subject_id')
+        $query = Subject::join('monitorings', 'monitorings.id', '=', 'subjects.monitoring_id')
+            ->join('grades', 'subjects.id', '=', 'grades.subject_id')
             ->join('students', 'students.id', '=', 'grades.student_id')
             ->join('groups', 'groups.id', '=', 'students.group_id');
         if ($sourceTable != null || $id != null) {
             $query->where("{$sourceTable}.id", $id);
+        }
+        if ($monitoringId != null) {
+            $query->where('monitorings.id', $monitoringId);
         }
         $groups = $query->distinct()
             ->pluck("{$targetTable}.name")
@@ -56,14 +65,18 @@ class ChartsDataRepository
         return $gradesForEachCategory;
     }
 
-    public function getAverageGrades(string $groupByTable, ?string $mainTable = null, ?int $id = null): array
+    public function getAverageGrades(string $groupByTable, ?string $mainTable = null, ?int $id = null, ?int $monitoringId = null): array
     {
-        $query = Subject::join('grades', 'subjects.id', '=', 'grades.subject_id')
+        $query = Subject::join('monitorings', 'monitorings.id', '=', 'subjects.monitoring_id')
+            ->join('grades', 'subjects.id', '=', 'grades.subject_id')
             ->join('students', 'students.id', '=', 'grades.student_id')
             ->join('groups', 'groups.id', '=', 'students.group_id')
             ->select(DB::raw('ROUND(AVG(`grades`.grade), 2) AS average_grade'));
             if ($mainTable != null || $id != null) {
                 $query->where("$mainTable.id", $id);
+            }
+            if ($monitoringId != null) {
+                $query->where('monitorings.id', $monitoringId);
             }
             $averageGrades = $query->groupBy("$groupByTable.name")
             ->pluck('average_grade')
@@ -73,13 +86,17 @@ class ChartsDataRepository
         return $averageGrades;
     }
 
-    public function getGradesAmount(?string $mainTable = null, ?int $id = null): array
+    public function getGradesAmount(?string $mainTable = null, ?int $id = null, ?int $monitoringId = null): array
     {
-        $query = Subject::join('grades', 'subjects.id', '=', 'grades.subject_id')
+        $query = Subject::join('monitorings', 'monitorings.id', '=', 'subjects.monitoring_id')
+            ->join('grades', 'subjects.id', '=', 'grades.subject_id')
             ->join('students', 'students.id', '=', 'grades.student_id')
             ->join('groups', 'groups.id', '=', 'students.group_id');
         if ($mainTable != null) {
             $query->where("$mainTable.id", $id);
+        }
+        if ($monitoringId != null) {
+            $query->where('monitorings.id', $monitoringId);
         }
         $gradesAmount = $query->select(DB::raw(
                 'SUM(CASE WHEN `grades`.grade = 5 THEN 1 ELSE 0 END) AS grade_5,
@@ -95,9 +112,10 @@ class ChartsDataRepository
         ];
     }
 
-    public function getAttendance(?int $groupId = null): array
+    public function getAttendance(?int $groupId = null, ?int $monitoringId = null): array
     {
-        $query = Group::join('students', 'groups.id', '=', 'students.group_id')
+        $query = Group::join('monitorings', 'monitorings.id', '=', 'groups.monitoring_id')
+            ->join('students', 'groups.id', '=', 'students.group_id')
             ->join('attendances', 'students.id', '=', 'attendances.student_id')
             ->select(DB::raw(
                 'SUM(attendances.unexcused_hours) AS valid_hours,
@@ -105,6 +123,9 @@ class ChartsDataRepository
             ));
         if ($groupId != null) {
             $query->where('groups.id', $groupId);
+        }
+        if ($monitoringId != null) {
+            $query->where('monitorings.id', $monitoringId);
         }
         $stmt = $query->first();
 
@@ -114,10 +135,10 @@ class ChartsDataRepository
         ];
     }
 
-    public function getQualityPerformance(?int $groupId = null): array
+    public function getQualityPerformance(?int $groupId = null, ?int $monitoringId = null): array
     {
-        $query = Group::
-        join('students', 'groups.id', '=', 'students.group_id')
+        $query = Group::join('monitorings', 'monitorings.id', '=', 'groups.monitoring_id')
+            ->join('students', 'groups.id', '=', 'students.group_id')
             ->join('grades', 'students.id', '=', 'grades.student_id')
             ->join('subjects', 'subjects.id', '=', 'grades.subject_id')
             ->selectRaw(
@@ -126,6 +147,9 @@ class ChartsDataRepository
             );
         if ($groupId != null) {
             $query->where('groups.id', $groupId);
+        }
+        if ($monitoringId != null) {
+            $query->where('monitorings.id', $monitoringId);
         }
         $stmt = $query->groupBy('subjects.id')
             ->get();

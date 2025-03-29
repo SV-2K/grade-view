@@ -108,7 +108,7 @@ class ExcelParser
 
     private function storeSubject(string $name, int $monitoringId): int
     {
-        $subjectId = $this->getSubjectId($name);
+        $subjectId = $this->getSubjectId($name, $monitoringId);
 
         if (NULL == $subjectId) {
             $subject = Subject::create([
@@ -166,10 +166,10 @@ class ExcelParser
         return $attendance ?? 0;
     }
 
-    private function getSubjectId(string $name ): int|null
+    private function getSubjectId(string $name, int $monitoringId): int|null
     {
-        if (Subject::whereName($name)->exists()) {
-            return Subject::whereName($name)->first()->id;
+        if (Subject::whereName($name)->whereMonitoringId($monitoringId)->exists()) {
+            return Subject::whereName($name)->whereMonitoringId($monitoringId)->first()->id;
         }
         return NULL;
     }

@@ -5,9 +5,9 @@
 
         <div class="fs-2">
             @php
-                if (request()->is('group')) {
+                if (\Illuminate\Support\Facades\Route::is('group')) {
                     echo $group ?? 'Группа не выбрана...';
-                } else if (request()->is('subject')) {
+                } else if (\Illuminate\Support\Facades\Route::is('subject')) {
                     echo $subject ?? 'Предмет не выбран...';
                 }
             @endphp

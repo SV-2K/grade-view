@@ -26,7 +26,7 @@ class GroupController extends Controller
             ]);
         }
 
-        $groupId = $this->groupRepository->getGroupId($groupName);
+        $groupId = $this->groupRepository->getGroupId($monitoring->id, $groupName);
 
         if (is_null($groupId)) {
             return redirect()->route('group');

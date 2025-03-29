@@ -19,17 +19,17 @@ class CollegeController extends Controller
     {
         return view('pages.college')->with([
             'monitoring' => $monitoring,
-            'averageGrade' => $this->collegeRepository->getAverageGrade(),
-            'absolutePerformance' => $this->collegeRepository->getAbsolutePerformance(),
-            'qualityPerformance' => $this->collegeRepository->getQualityPerformance(),
-            'groupsAmount' => $this->collegeRepository->getGroupsAmount(),
-            'studentsAmount' => $this->collegeRepository->getStudentsAmount(),
-            'performance' => $this->dataRepository->getQualityPerformance(),
-            'qualityPerformanceCategories' => $this->dataRepository->getCategories('subjects'),
-            'averageGradesCategories' => $this->dataRepository->getCategories('groups'),
-            'averageGrades' => $this->dataRepository->getAverageGrades('groups'),
-            'attendance' => $this->dataRepository->getAttendance(),
-            'gradesAmount' => $this->dataRepository->getGradesAmount(),
+            'averageGrade' => $this->collegeRepository->getAverageGrade($monitoring->id),
+            'absolutePerformance' => $this->collegeRepository->getAbsolutePerformance($monitoring->id),
+            'qualityPerformance' => $this->collegeRepository->getQualityPerformance($monitoring->id),
+            'groupsAmount' => $this->collegeRepository->getGroupsAmount($monitoring->id),
+            'studentsAmount' => $this->collegeRepository->getStudentsAmount($monitoring->id),
+            'performance' => $this->dataRepository->getQualityPerformance(monitoringId: $monitoring->id),
+            'qualityPerformanceCategories' => $this->dataRepository->getCategories('subjects', monitoringId: $monitoring->id),
+            'averageGradesCategories' => $this->dataRepository->getCategories('groups', monitoringId: $monitoring->id),
+            'averageGrades' => $this->dataRepository->getAverageGrades('groups', monitoringId: $monitoring->id),
+            'attendance' => $this->dataRepository->getAttendance(monitoringId: $monitoring->id),
+            'gradesAmount' => $this->dataRepository->getGradesAmount(monitoringId: $monitoring->id),
         ]);
     }
 }
