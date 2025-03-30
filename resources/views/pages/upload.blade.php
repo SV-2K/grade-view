@@ -25,7 +25,7 @@
         <div class="mb-3">
             <label for="end-date" class="form-label">Дата окончания мониторинга</label>
             <input class="form-control @error('end-date') is-invalid @enderror" type="date" value="{{ old('end-date') }}" name="end-date" id="end-date">
-            @error('uploadFiles')
+            @error('end-date')
             <div class="invalid-feedback">
                 {{ $message }}
             </div>
@@ -33,7 +33,7 @@
         </div>
         <div class="mb-3">
             <label for="uploaded-files" class="form-label">Выберите файл(ы) мониторинга</label>
-            <input class="form-control @error('uploaded-files') is-invalid @enderror" type="file" name="uploaded-files" id="uploaded-files">
+            <input class="form-control @error('uploaded-files') is-invalid @enderror" type="file" name="uploaded-files[]" id="uploaded-files" multiple>
             @error('uploaded-files')
                 <div class="invalid-feedback">
                     {{ $message }}

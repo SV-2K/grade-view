@@ -17,16 +17,18 @@ class ExcelParser
     # Все те слова, которые будут считаться за оценку 5
     private array $gradeFiveKeywords = ['зач', 'зач.', 'осв', 'отл', 'отч'];
 
-    public function run(string $monitoringFilePath, int $monitoringId): void
+    public function run(array $filePaths, int $monitoringId): void
     {
         ini_set('memory_limit', '500M');
 
-        $spreadsheet = IOFactory::load($monitoringFilePath);
+        foreach ($filePaths as $path) {
+            $spreadsheet = IOFactory::load($path);
 
-        foreach ($spreadsheet->getAllSheets() as $workSheet) {
-            $rowStopper = $this->getRowStopper($workSheet);
-            $columnStopper = $this->getColumnStopper($workSheet);
-            $this->processData($monitoringId, $workSheet, $rowStopper, $columnStopper);
+            foreach ($spreadsheet->getAllSheets() as $workSheet) {
+                $rowStopper = $this->getRowStopper($workSheet);
+                $columnStopper = $this->getColumnStopper($workSheet);
+                $this->processData($monitoringId, $workSheet, $rowStopper, $columnStopper);
+            }
         }
     }
 

@@ -24,8 +24,8 @@ class UploadRequest extends FormRequest
         return [
             'name' => ['required', 'min:10', 'max:255'],
             'start-date' => ['required'],
-            'end-date' => ['required',  'after:startDate'],
-            'uploaded-files' => ['required', 'extensions:xlsx,xls,xml'],
+            'end-date' => ['required',  'after:start-date'],
+            'uploaded-files.*' => ['required', 'extensions:xlsx,xls,xml'],
         ];
     }
 }

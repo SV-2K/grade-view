@@ -28,11 +28,18 @@ class UploadController extends Controller
             'end_date' => $request->input('end-date'),
         ])->id;
 
-        $filePath = $request->file('uploaded-files')->getRealPath();
+        $files = $request->file('uploaded-files');
+        $filePaths = [];
 
-        $this->excelParser->run($filePath, $id);
+        foreach ($files as $key => $file) {
+            $filePaths[] = $file->getRealPath();
+        }
 
-        $request->file('uploaded-files')->store('/uploaded');
+        $this->excelParser->run($filePaths, $id);
+
+        foreach ($files as $file) {
+            $file->store('/uploaded');
+        }
 
         return redirect(route('profile'));
     }
