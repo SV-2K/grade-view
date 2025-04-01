@@ -30,6 +30,9 @@
                         <div class="section">
                             Количество студентов: {{ $studentsAmount }}
                         </div>
+                        <div class="section">
+                            Количество оценок: {{ $gradesAmount }}
+                        </div>
                     </div>
                 </div>
             </div>

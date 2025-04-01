@@ -42,10 +42,11 @@ class GroupController extends Controller
             'absolutePerformance' => $this->groupRepository->getAbsolutePerformance($groupId),
             'qualityPerformance' =>$this->groupRepository->getQualityPerformance($groupId),
             'studentsAmount' =>$this->groupRepository->getStudentsAmount($groupId),
+            'gradesAmount' => $this->groupRepository->getGradesAmount($groupId),
             'grades' => $this->dataRepository->getGradesForEachCategory('groups', 'subjects', $groupId),
             'qualityPerformanceCategories' => $subjects,
             'gradeDistributionCategories' => $subjects,
-            'gradesAmount' => $this->dataRepository->getGradesAmount('groups', $groupId),
+            'gradesAmounts' => $this->dataRepository->getGradesAmounts('groups', $groupId),
             'attendance' => $this->dataRepository->getAttendance($groupId),
             'performance' => $this->dataRepository->getQualityPerformance($groupId),
         ]);

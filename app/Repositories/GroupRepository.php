@@ -10,7 +10,7 @@ class GroupRepository
     public function getGroupId(int $monitoringId, string $groupName): int|null
     {
         $groupId = Group::where('name', $groupName)
-            ->where('monitoring_id', $monitoringId)
+            ->whereMonitoringId($monitoringId)
             ->value('id');
         return $groupId;
     }
@@ -18,7 +18,7 @@ class GroupRepository
     {
         $averageGrade = Group::join('students', 'groups.id', '=', 'students.group_id')
             ->join('grades', 'students.id', '=', 'grades.student_id')
-            ->where('groups.id', $groupId)
+            ->whereGroupId($groupId)
             ->avg('grade');
         return $averageGrade;
     }
@@ -31,7 +31,7 @@ class GroupRepository
                 'SUM(CASE WHEN grades.grade IN (3, 4, 5) THEN 1 ELSE 0 END) * 100 /
                 SUM(CASE WHEN grades.grade IN (2, 3, 4, 5) THEN 1 ELSE 0 END) AS absolute_performance'
             ))
-            ->where('groups.id', $groupId)
+            ->whereGroupId($groupId)
             ->first()
             ->absolute_performance;
         return $absolutePerformance;
@@ -45,7 +45,7 @@ class GroupRepository
                 'SUM(CASE WHEN grades.grade IN (4, 5) THEN 1 ELSE 0 END) * 100 /
                 SUM(CASE WHEN grades.grade IN (2, 3, 4, 5) THEN 1 ELSE 0 END) AS quality_performance'
             ))
-            ->where('groups.id', $groupId)
+            ->whereGroupId($groupId)
             ->first()
             ->quality_performance;
         return $qualityPerformance;
@@ -54,9 +54,18 @@ class GroupRepository
     public function getStudentsAmount(int $groupId): int
     {
         $studentsAmount = Group::join('students', 'groups.id', '=', 'students.group_id')
-            ->where('groups.id', $groupId)
+            ->whereGroupId($groupId)
             ->count('students.id');
         return $studentsAmount;
+    }
+
+    public function getGradesAmount(int $groupId): int
+    {
+        $gradesAmount = Group::join('students', 'groups.id', '=', 'students.group_id')
+            ->join('grades', 'students.id', '=', 'grades.student_id')
+            ->whereGroupId($groupId)
+            ->count('grades.grade');
+        return $gradesAmount;
     }
 }
 

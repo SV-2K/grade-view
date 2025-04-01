@@ -2,7 +2,7 @@
 
 @section('main')
     <div class="row gap-4 container-fluid">
-        <div class="section d-flex flex-column">
+        <div class="section col-7 d-flex flex-column">
             <div>Качественная успеваемость по предметам в %</div>
             <div id="quality-performance" class="flex-grow-1">
                 @include('charts.quality-performance')
@@ -30,6 +30,9 @@
                     </div>
                     <div class="section">
                         Количество студентов: {{ $studentsAmount ?? 'Error' }}
+                    </div>
+                    <div class="section">
+                        Количество оценок: {{ $gradesAmount ?? 'Error' }}
                     </div>
                 </div>
                 <div class="section mt-4 p-2 text-center d-flex flex-column" style="height: 400px">

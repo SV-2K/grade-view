@@ -60,4 +60,13 @@ class CollegeRepository
             ->count('groups.id');
         return $groupsAmount;
     }
+
+    public function getGradesAmount(int $monitoringId): int
+    {
+        $gradesAmount = Monitoring::join('subjects', 'monitorings.id', '=', 'subjects.monitoring_id')
+            ->join('grades', 'subjects.id', '=', 'grades.subject_id')
+            ->whereMonitoringId($monitoringId)
+            ->count('grades.grade');
+        return $gradesAmount;
+    }
 }

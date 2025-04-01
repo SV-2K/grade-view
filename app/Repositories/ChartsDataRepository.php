@@ -86,7 +86,7 @@ class ChartsDataRepository
         return $averageGrades;
     }
 
-    public function getGradesAmount(?string $mainTable = null, ?int $id = null, ?int $monitoringId = null): array
+    public function getGradesAmounts(?string $mainTable = null, ?int $id = null, ?int $monitoringId = null): array
     {
         $query = Subject::join('monitorings', 'monitorings.id', '=', 'subjects.monitoring_id')
             ->join('grades', 'subjects.id', '=', 'grades.subject_id')

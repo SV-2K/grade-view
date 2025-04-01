@@ -47,7 +47,7 @@ class SubjectController extends Controller
             'averageGradesCategories' => $groups,
             'grades' => $this->dataRepository->getGradesForEachCategory('subjects', 'groups',$subjectId),
             'averageGrades' => $this->dataRepository->getAverageGrades('groups', 'subjects', $subjectId),
-            'gradesAmount' => $this->dataRepository->getGradesAmount('subjects', $subjectId),
+            'gradesAmounts' => $this->dataRepository->getGradesAmounts('subjects', $subjectId),
         ]);
     }
 }
