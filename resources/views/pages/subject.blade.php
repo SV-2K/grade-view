@@ -8,12 +8,18 @@
     @else
         <div class="row container-fluid">
             <div class="col-8 p-0 pe-4">
-                <div id="average-grades" class="section h-50 p-0">
-                    @include('charts.average-grades')
+                <div class="section p-2 h-50 d-flex flex-column">
+                    <div class="ms-2">Средний балл по группам</div>
+                    <div id="average-grades" class="flex-grow-1">
+                        @include('charts.average-grades')
+                    </div>
                 </div>
                 <div class="h-50 p-0 pt-4">
-                    <div id="grade-distribution" class="section h-100 p-0">
-                        @include('charts.grade-distribution')
+                    <div class="section h-100 p-2 d-flex flex-column">
+                        <div class="ms-2">Соотношение оценок по группам</div>
+                        <div id="grade-distribution" class="flex-grow-1">
+                            @include('charts.grade-distribution')
+                        </div>
                     </div>
                 </div>
             </div>
@@ -35,9 +41,13 @@
                         Количество студентов: {{ $studentsAmount }}
                     </div>
                 </div>
-                <div id="grades-ratio" class="section mt-4 p-0" style="height: 450px">
-                    @include('charts.grades-ratio')
+                <div class="section mt-4 p-2 d-flex flex-column" style="height: 450px">
+                    <div class="ms-2">Соотношение оценок предмета</div>
+                    <div id="grades-ratio" class="flex-grow-1">
+                        @include('charts.grades-ratio')
+                    </div>
                 </div>
+
             </div>
         </div>
     @endif

@@ -2,8 +2,11 @@
 
 @section('main')
     <div class="row gap-4 container-fluid">
-        <div id="quality-performance" class="section col-7">
-            @include('charts.quality-performance')
+        <div class="section d-flex flex-column">
+            <div>Качественная успеваемость по предметам в %</div>
+            <div id="quality-performance" class="flex-grow-1">
+                @include('charts.quality-performance')
+            </div>
         </div>
         <div class="row col-5 gap-0">
             <div class="col-3 p-0">
@@ -29,14 +32,19 @@
                         Количество студентов: {{ $studentsAmount ?? 'Error' }}
                     </div>
                 </div>
-                <div id="grades-ratio" class="section mt-4 p-0" style="height: 400px">
-                    @include('charts.grades-ratio')
+                <div class="section mt-4 p-2 text-center d-flex flex-column" style="height: 400px">
+                    <div>Соотношение оценок</div>
+                    <div id="grades-ratio" class="flex-grow-1">
+                        @include('charts.grades-ratio')
+                    </div>
                 </div>
             </div>
             <div class="row m-0 mt-4 p-0">
-                <div id="average-grades" class="section" style="height: 1000px;">
-                    @include('charts.average-grades')
-                    dsd
+                <div class="section d-flex flex-column з-2" style="height: 1000px;">
+                    <div>Средний балл по группам</div>
+                    <div id="average-grades" class="flex-grow-1">
+                        @include('charts.average-grades')
+                    </div>
                 </div>
             </div>
         </div>

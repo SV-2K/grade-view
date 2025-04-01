@@ -34,14 +34,20 @@
                 </div>
             </div>
             <div class="p-0 flex-grow-1 me-4 mt-4">
-                <div id="quality-performance" class="section p-0">
-                    @include('charts.quality-performance')
+                <div class="section p-2">
+                    <div class="ms-2">Качественная успеваемость в %</div>
+                    <div id="quality-performance">
+                        @include('charts.quality-performance')
+                    </div>
                 </div>
             </div>
         </div>
         <div class="row gap-4 mt-4 container-fluid">
-            <div id="grade-distribution" class="section col p-0" style="height: 230px">
-                @include('charts.grade-distribution')
+            <div class="section p-2">
+                <div class="ms-2">Соотношение оценок по предметам в %</div>
+                <div id="grade-distribution" class="">
+                    @include('charts.grade-distribution')
+                </div>
             </div>
         </div>
     @endif
