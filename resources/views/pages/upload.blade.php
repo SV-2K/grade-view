@@ -1,7 +1,8 @@
 @extends('layouts.medium-window')
 
 @section('main')
-    <h1>Загрузка мониторинга</h1>
+    <a href="{{ route('profile') }}" class="section ps-1">&#8592; Назад в профиль</a>
+    <h1 class="d-block mt-3">Загрузка мониторинга</h1>
     <form action="{{ route('monitoring.upload') }}" method="post" enctype="multipart/form-data">
         @csrf
         <div class="mb-3">
