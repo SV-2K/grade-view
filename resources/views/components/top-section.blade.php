@@ -1,6 +1,11 @@
     <div class="m-0 me-4 mb-4 section">
-        <div class="fs-4 mb-0">
-            {{ $monitoring->name ?? 'Ошибка загрузки названия мониторинга' }}
+        <div class="d-flex">
+            <div class="fs-4 mb-0 me-2">
+                {{ $monitoring->name ?? 'Ошибка загрузки названия мониторинга' }}
+            </div>
+            {{ date('d.m.Y', strtotime($monitoring->start_date)) }}
+            -
+            {{ date('d.m.Y', strtotime($monitoring->end_date)) }}
         </div>
 
         <div class="fs-2">

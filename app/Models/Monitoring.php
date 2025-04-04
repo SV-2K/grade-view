@@ -10,6 +10,11 @@ class Monitoring extends Model
 {
     protected $fillable = ['name', 'user_id', 'start_date', 'end_date'];
 
+    protected $casts = [
+        'start_date' => 'date:d.m.Y',
+        'end_date' => 'date:d.m.Y'
+    ];
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
