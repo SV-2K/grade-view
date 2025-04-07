@@ -26,7 +26,7 @@ class CollegeController extends Controller
             'studentsAmount' => $this->collegeRepository->getStudentsAmount($monitoring->id),
             'gradesAmount' => $this->collegeRepository->getGradesAmount($monitoring->id),
             'performance' => $this->dataRepository->getQualityPerformance(monitoringId: $monitoring->id),
-            'qualityPerformanceCategories' => $this->dataRepository->getCategories('subjects', monitoringId: $monitoring->id),
+            'qualityPerformanceCategories' => $this->dataRepository->getTeachers($monitoring->id),
             'averageGradesCategories' => $this->dataRepository->getCategories('groups', monitoringId: $monitoring->id),
             'averageGrades' => $this->dataRepository->getAverageGrades('groups', monitoringId: $monitoring->id),
             'attendance' => $this->dataRepository->getAttendance(monitoringId: $monitoring->id),

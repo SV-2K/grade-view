@@ -13,18 +13,25 @@ class ExcelParser
 {
     private int $rowStarter = 17;
     private int $columnStarter = 4;
+    private bool $isSeparated; #some monitorings have the subject and teacher name separated, and some have them in one cell
 
     # Все те слова, которые будут считаться за оценку 5
     private array $gradeFiveKeywords = ['зач', 'зач.', 'осв', 'отл', 'отч'];
 
     public function run(array $filePaths, int $monitoringId): void
     {
-        ini_set('memory_limit', '500M');
+        ini_set('memory_limit', '1024M');
+        ini_set('max_execution_time', 120);
 
         foreach ($filePaths as $path) {
-            $spreadsheet = IOFactory::load($path);
+            $reader = IOFactory::createReaderForFile($path);
+            $reader->setReadDataOnly(true);
+
+            $spreadsheet = $reader->load($path);
 
             foreach ($spreadsheet->getAllSheets() as $workSheet) {
+                $this->isSeparated = $this->isSubjInfoSeparated($workSheet);
+
                 $rowStopper = $this->getRowStopper($workSheet);
                 $columnStopper = $this->getColumnStopper($workSheet);
                 $this->processData($monitoringId, $workSheet, $rowStopper, $columnStopper);
@@ -41,8 +48,15 @@ class ExcelParser
 
         for ($column = $this->columnStarter; $column < $columnStopper; $column++) {
 
-            $subjectName = $workSheet->getCell([$column, 14])->getValue();
-            $subjectId = $this->storeSubject($subjectName, $monitoringId);
+            if ($this->isSeparated) {
+                $subjectName = $workSheet->getCell([$column, 13])->getValue();
+                $teacherName = $workSheet->getCell([$column, 14])->getValue();
+            } else {
+                $cell = $workSheet->getCell([$column, 14])->getValue();
+                $subjectName = $this->getSubject($cell);
+                $teacherName = $this->getTeacher($cell);
+            }
+            $subjectId = $this->storeSubject($subjectName, $teacherName, $monitoringId);
 
             for ($row = $this->rowStarter; $row < $rowStopper; $row++) {
                 if (!isset($studentIds[$row])) {
@@ -88,6 +102,16 @@ class ExcelParser
         return $rowStopper;
     }
 
+    private function isSubjInfoSeparated($sheet): bool
+    {
+        $cell = $sheet->getCell('D13')->getValue();
+
+        if ($cell === null || str_contains($cell, 'Наименование дисциплины')) {
+            return false;
+        }
+        return true;
+    }
+
     private function storeGroup(string $name, int $monitoringId): int
     {
         $group = Group::create([
@@ -108,13 +132,14 @@ class ExcelParser
         return $student->id;
     }
 
-    private function storeSubject(string $name, int $monitoringId): int
+    private function storeSubject(string $name, string $teacher_name, int $monitoringId): int
     {
         $subjectId = $this->getSubjectId($name, $monitoringId);
 
         if (NULL == $subjectId) {
             $subject = Subject::create([
                 'name' => $name,
+                'teacher_name' => $teacher_name,
                 'monitoring_id' => $monitoringId
             ]);
 
@@ -174,5 +199,16 @@ class ExcelParser
             return Subject::whereName($name)->whereMonitoringId($monitoringId)->first()->id;
         }
         return NULL;
+    }
+
+    private function getSubject(string $string): string
+    {
+        $length = strpos($string, '(');
+        return trim(substr($string, 0, $length));
+    }
+
+    private function getTeacher(string $string): string
+    {
+        return trim(substr($string, strpos($string, '(')), '(\)');
     }
 }

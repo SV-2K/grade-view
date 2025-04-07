@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Subject extends Model
 {
-    protected $fillable = ['name', 'monitoring_id'];
+    protected $fillable = ['name', 'teacher_name', 'monitoring_id'];
     public $timestamps = false;
 
     public function grade(): HasMany

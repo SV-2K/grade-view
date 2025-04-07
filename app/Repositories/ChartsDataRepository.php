@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Group;
+use App\Models\Monitoring;
 use App\Models\Subject;
 use Illuminate\Support\Facades\DB;
 
@@ -31,6 +32,15 @@ class ChartsDataRepository
             ->pluck("{$targetTable}.name")
             ->toArray();
         return $groups;
+    }
+
+    public function getTeachers(int $monitoringId): array
+    {
+        $teachers = Monitoring::join('subjects', 'monitorings.id', '=', 'subjects.monitoring_id')
+            ->where('monitorings.id', $monitoringId)
+            ->pluck('teacher_name')
+            ->toArray();
+        return $teachers;
     }
 
     public function getGradesForEachCategory(string $mainTable, string $groupByTable, int $id): array
