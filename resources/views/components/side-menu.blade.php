@@ -39,7 +39,7 @@
             </div>
             <div class="side-list">
                 @foreach($subjects as $subject)
-                    <a href="{{ route('subject', ['name' => $subject->name, 'monitoring' => $monitoring->id]) }}" class="section @if(request()->get('name') !== $subject->name) side-button-active @endif">
+                    <a href="{{ route('subject', ['name' => $subject->name, 'monitoring' => $monitoring->id]) }}" title="{{$subject->name}}" class="section @if(request()->get('name') !== $subject->name) side-button-active @endif">
                         {{ $subject->teacher_name }}
                     </a>
                 @endforeach
