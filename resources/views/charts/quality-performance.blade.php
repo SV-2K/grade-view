@@ -24,7 +24,7 @@
                 },
                 labels: {
                     format: function (v) {
-                        return v;
+                        return v.toFixed(1);
                     }
                 }
             },

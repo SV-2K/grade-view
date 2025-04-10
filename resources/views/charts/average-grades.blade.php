@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", function () {
             },
             labels: {
                 format: function (v) {
-                    return v;
+                    return v.toFixed(2);
                 }
             }
         },
