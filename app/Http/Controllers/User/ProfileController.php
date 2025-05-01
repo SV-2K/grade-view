@@ -5,18 +5,16 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Models\Monitoring;
 use Illuminate\Http\Request;
+use App\Facades\User;
 
 class ProfileController extends Controller
 {
     public function profile()
     {
-        $monitorings = $this->getMonitorings();
-        return view('pages.profile')->with('monitorings', $monitorings);
-    }
+        $monitorings = User::getMonitorings();
 
-    private function getMonitorings():array
-    {
-        return Monitoring::whereUserId(auth()->id())->get()->toArray();
+        return view('pages.profile')
+            ->with('monitorings', $monitorings);
     }
 
     public function deleteMonitoring(int $id)
