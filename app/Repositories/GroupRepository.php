@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class GroupRepository
 {
-    public function getGroupId(int $monitoringId, string $groupName): int|null
+    public function getGroupId(int $monitoringId, ?string $groupName): int|null
     {
         $groupId = Group::where('name', $groupName)
             ->whereMonitoringId($monitoringId)
