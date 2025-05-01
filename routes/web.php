@@ -1,17 +1,16 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\UploadController;
-use App\Http\Controllers\FeedbackController;
-use App\Http\Controllers\GroupController;
-use App\Http\Controllers\CollegeController;
-use App\Http\Controllers\SubjectController;
-use App\Http\Controllers\User\RegisterController;
+use App\Http\Controllers\Pages\CollegeController;
+use App\Http\Controllers\Pages\FeedbackController;
+use App\Http\Controllers\Pages\GroupController;
+use App\Http\Controllers\Pages\SubjectController;
+use App\Http\Controllers\Pages\UploadController;
 use App\Http\Controllers\User\LoginController;
 use App\Http\Controllers\User\ProfileController;
+use App\Http\Controllers\User\RegisterController;
 use App\Http\Middleware\EnsureUserIsAuth;
 use App\Http\Middleware\EnsureUserIsGuest;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/{monitoring}/group', [GroupController::class, 'show'])->name('group');
 Route::get('/{monitoring}/college', [CollegeController::class, 'show'])->name('college');

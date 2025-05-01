@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Pages;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\UploadRequest;
 use App\Models\Monitoring;
-use Illuminate\Http\Request;
 use App\Services\ExcelParser;
 
 class UploadController extends Controller

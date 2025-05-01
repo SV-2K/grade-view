@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Pages;
 
+use App\Http\Controllers\Controller;
 use App\Models\Monitoring;
 use App\Repositories\ChartsDataRepository;
 use App\Repositories\GroupRepository;
