@@ -4,7 +4,7 @@
             bindto: '#quality-performance',
             data: {
                 columns: [
-                    @json($performance)
+                    @json($qualityPerformanceData['performance'])
                 ],
                 type: 'bar',
                 order: null,
@@ -32,7 +32,7 @@
                 rotated: true,
                 x: {
                     type: 'category',
-                    categories: @json($qualityPerformanceCategories),
+                    categories: @json($qualityPerformanceData['categories']),
                     tick: {
                         multiline: false,
                         multilineMax: 1,

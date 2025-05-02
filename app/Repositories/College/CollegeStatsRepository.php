@@ -1,22 +1,29 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Repositories\College;
 
 use App\Models\Monitoring;
-use Illuminate\Support\Facades\DB;
 
-class CollegeRepository
+class CollegeStatsRepository
 {
-    public function getAverageGrade(int $monitoringId): float
+    private int $monitoringId;
+
+    public function setMonitoringId(int $monitoringId): void
+    {
+        $this->monitoringId = $monitoringId;
+    }
+
+
+    public function getAverageGrade(): float
     {
         $averageGrade = Monitoring::join('subjects', 'monitorings.id', '=', 'subjects.monitoring_id')
             ->join('grades', 'subjects.id', '=', 'grades.subject_id')
-            ->whereMonitoringId($monitoringId)
+            ->whereMonitoringId($this->monitoringId)
             ->avg('grade');
         return $averageGrade;
     }
 
-    public function getAbsolutePerformance(int $monitoringId): float
+    public function getAbsolutePerformance(): float
     {
         $absolutePerformance = Monitoring::join('subjects', 'monitorings.id', '=', 'subjects.monitoring_id')
             ->join('grades', 'subjects.id', '=', 'grades.subject_id')
@@ -24,13 +31,13 @@ class CollegeRepository
                 'SUM(CASE WHEN grades.grade IN (3, 4, 5) THEN 1 ELSE 0 END) * 100 /
                 SUM(CASE WHEN grades.grade IN (2, 3, 4, 5) THEN 1 ELSE 0 END) AS absolute_performance'
             )
-            ->whereMonitoringId($monitoringId)
+            ->whereMonitoringId($this->monitoringId)
             ->first()
             ->absolute_performance;
         return $absolutePerformance;
     }
 
-    public function getQualityPerformance(int $monitoringId): float
+    public function getQualityPerformance(): float
     {
         $qualityPerformance = Monitoring::join('subjects', 'monitorings.id', '=', 'subjects.monitoring_id')
             ->join('grades', 'subjects.id', '=', 'grades.subject_id')
@@ -38,34 +45,34 @@ class CollegeRepository
                 'SUM(CASE WHEN grades.grade IN (4, 5) THEN 1 ELSE 0 END) * 100 /
                 SUM(CASE WHEN grades.grade IN (2, 3, 4, 5) THEN 1 ELSE 0 END) AS quality_performance'
             )
-            ->whereMonitoringId($monitoringId)
+            ->whereMonitoringId($this->monitoringId)
             ->first()
             ->quality_performance;
         return $qualityPerformance;
     }
 
-    public function getStudentsAmount(int $monitoringId): int
+    public function getStudentsAmount(): int
     {
         $studentsAmount = Monitoring::join('groups', 'monitorings.id', '=', 'groups.monitoring_id')
             ->join('students', 'groups.id', '=', 'students.group_id')
-            ->whereMonitoringId($monitoringId)
+            ->whereMonitoringId($this->monitoringId)
             ->count('students.id');
         return $studentsAmount;
     }
 
-    public function getGroupsAmount(int $monitoringId): int
+    public function getGroupsAmount(): int
     {
         $groupsAmount = Monitoring::join('groups', 'monitorings.id', '=', 'groups.monitoring_id')
-            ->whereMonitoringId($monitoringId)
+            ->whereMonitoringId($this->monitoringId)
             ->count('groups.id');
         return $groupsAmount;
     }
 
-    public function getGradesAmount(int $monitoringId): int
+    public function getGradesAmount(): int
     {
         $gradesAmount = Monitoring::join('subjects', 'monitorings.id', '=', 'subjects.monitoring_id')
             ->join('grades', 'subjects.id', '=', 'grades.subject_id')
-            ->whereMonitoringId($monitoringId)
+            ->whereMonitoringId($this->monitoringId)
             ->count('grades.grade');
         return $gradesAmount;
     }

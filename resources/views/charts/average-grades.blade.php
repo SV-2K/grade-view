@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
         bindto: '#average-grades',
         data: {
             columns: [
-                @json($averageGrades)
+                @json($averageGradesData['averageGrades'])
             ],
             type: 'bar',
             color: function (color, d) {
@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", function () {
             rotated: true,
             x: {
                 type: 'category',
-                categories: @json($averageGradesCategories),
+                categories: @json($averageGradesData['groupNames']),
                 tick: {
                     multiline: false,
                     multilineMax: 1,

@@ -3,7 +3,7 @@
         c3.generate({
             bindto: '#grades-ratio',
             data: {
-                columns: @json($gradesAmounts),
+                columns: @json($gradesRatioData),
                 type: 'donut',
                 order: null
             },

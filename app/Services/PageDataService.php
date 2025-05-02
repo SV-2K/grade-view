@@ -4,38 +4,18 @@ namespace App\Services;
 
 use App\Models\Monitoring;
 use App\Repositories\ChartsDataRepository;
-use App\Repositories\CollegeRepository;
+use App\Repositories\College\CollegeStatsRepository;
 use App\Repositories\GroupRepository;
 use App\Repositories\SubjectRepository;
 
 class PageDataService
 {
     public function __construct(
-        private ChartsDataRepository $dataRepository,
-        private CollegeRepository $collegeRepository,
-        private GroupRepository $groupRepository,
-        private SubjectRepository $subjectRepository,
+        private ChartsDataRepository   $dataRepository,
+        private GroupRepository        $groupRepository,
+        private SubjectRepository      $subjectRepository,
     )
     {}
-
-    public function getCollegePageData(Monitoring $monitoring): array
-    {
-        return [
-            'monitoring' => $monitoring,
-            'averageGrade' => $this->collegeRepository->getAverageGrade($monitoring->id),
-            'absolutePerformance' => $this->collegeRepository->getAbsolutePerformance($monitoring->id),
-            'qualityPerformance' => $this->collegeRepository->getQualityPerformance($monitoring->id),
-            'groupsAmount' => $this->collegeRepository->getGroupsAmount($monitoring->id),
-            'studentsAmount' => $this->collegeRepository->getStudentsAmount($monitoring->id),
-            'gradesAmount' => $this->collegeRepository->getGradesAmount($monitoring->id),
-            'performance' => $this->dataRepository->getQualityPerformance(monitoringId: $monitoring->id),
-            'qualityPerformanceCategories' => $this->dataRepository->getTeachers($monitoring->id),
-            'averageGradesCategories' => $this->dataRepository->getCategories('groups', monitoringId: $monitoring->id),
-            'averageGrades' => $this->dataRepository->getAverageGrades('groups', monitoringId: $monitoring->id),
-            'attendance' => $this->dataRepository->getAttendance(monitoringId: $monitoring->id),
-            'gradesAmounts' => $this->dataRepository->getGradesAmounts(monitoringId: $monitoring->id),
-        ];
-    }
 
     public function getGroupPageData(Monitoring $monitoring, string $groupName, int $groupId): array
     {

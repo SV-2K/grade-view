@@ -3,7 +3,7 @@
         c3.generate({
             bindto: '#absence-ratio',
             data: {
-                columns: @json($attendance),
+                columns: @json($attendanceData),
                 type: 'bar',
                 groups: [
                     ['Ув', 'Н/ув']
