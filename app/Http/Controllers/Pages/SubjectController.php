@@ -2,22 +2,24 @@
 
 namespace App\Http\Controllers\Pages;
 
-use App\Facades\PageData;
 use App\Http\Controllers\Controller;
 use App\Models\Monitoring;
-use App\Repositories\ChartsDataRepository;
-use App\Repositories\SubjectRepository;
+use App\Repositories\Subject\SubjectStatsRepository;
+use App\Services\SubjectService;
 use Illuminate\Http\Request;
 
 class SubjectController extends Controller
 {
     public function __construct(
-        private ChartsDataRepository $dataRepository,
-        private SubjectRepository $subjectRepository
+        private SubjectStatsRepository $subjectRepository
     )
     {}
 
-    public function show(Request $request, Monitoring $monitoring)
+    public function show(
+        Request         $request,
+        Monitoring      $monitoring,
+        SubjectService  $service
+    )
     {
         $subjectName = $request->input('name');
         $subjectId = $this->subjectRepository->getSubjectId($monitoring->id, $subjectName);
@@ -31,7 +33,7 @@ class SubjectController extends Controller
 
         return view('pages.subject')
             ->with(
-                PageData::getSubjectPageData($monitoring, $subjectName, $subjectId)
+                $service->getSubjectPageData($monitoring, $subjectName, $subjectId)
             );
     }
 }
