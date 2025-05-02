@@ -2,24 +2,24 @@
 
 namespace App\Http\Controllers\Pages;
 
-use App\Facades\PageData;
 use App\Http\Controllers\Controller;
 use App\Models\Monitoring;
-use App\Repositories\ChartsDataRepository;
-use App\Repositories\GroupRepository;
+use App\Repositories\Group\GroupStatsRepository;
+use App\Services\GroupService;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class GroupController extends Controller
 {
-    public function __construct(
-        private GroupRepository $groupRepository,
-    )
-    {}
-
-    public function show(Request $request, Monitoring $monitoring)
+    public function show(
+        Request $request,
+        Monitoring $monitoring,
+        GroupStatsRepository $statsRepository,
+        GroupService $service
+    ): View
     {
         $groupName = $request->input('name');
-        $groupId = $this->groupRepository->getGroupId($monitoring->id, $groupName);
+        $groupId = $statsRepository->getGroupId($monitoring->id, $groupName);
 
         if (is_null($groupName) || is_null($groupId)) {
             return view('pages.group')->with([
@@ -30,7 +30,7 @@ class GroupController extends Controller
 
         return view('pages.group')
             ->with(
-                PageData::getGroupPageData($monitoring, $groupName, $groupId)
+                $service->getGroupPageData($monitoring, $groupName, $groupId)
             );
     }
 }

@@ -3,7 +3,7 @@
         c3.generate({
             bindto: '#grade-distribution',
             data: {
-                columns: @json($grades),
+                columns: @json($gradeDistributionData['grades']),
                 type: 'bar',
                 groups: [
                     ['5', '4', '3', '2']
@@ -18,7 +18,7 @@
                 x: {
                     show: true,
                     type: 'category',
-                    categories: @json($gradeDistributionCategories),
+                    categories: @json($gradeDistributionData['categories']),
                     tick: {
                         multiline: false,
                         multilineMax: 1,

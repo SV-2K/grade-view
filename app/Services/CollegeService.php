@@ -5,8 +5,6 @@ namespace App\Services;
 use App\Models\Monitoring;
 use App\Repositories\College\CollegeChartRepository;
 use App\Repositories\College\CollegeStatsRepository;
-use App\Repositories\GroupRepository;
-use function Symfony\Component\Translation\t;
 
 class CollegeService
 {
@@ -44,16 +42,16 @@ class CollegeService
         $collection = $this->collegeChartRepository->getQualityPerformance()
             ->sortBy('quality_performance');
 
-        $subjectPerformance = [];
+        $subjectPerformances = [];
         $teacherNames = [];
 
         foreach ($collection as $item) {
-            $subjectPerformance[] = $item->quality_performance;
+            $subjectPerformances[] = $item->quality_performance;
             $teacherNames[] = $item->teacher_name;
         }
 
         return [
-            'performance' => $subjectPerformance,
+            'performance' => $subjectPerformances,
             'categories' => $teacherNames,
         ];
     }

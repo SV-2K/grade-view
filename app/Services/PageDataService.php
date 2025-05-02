@@ -4,40 +4,16 @@ namespace App\Services;
 
 use App\Models\Monitoring;
 use App\Repositories\ChartsDataRepository;
-use App\Repositories\College\CollegeStatsRepository;
-use App\Repositories\GroupRepository;
+use App\Repositories\Group\GroupStatsRepository;
 use App\Repositories\SubjectRepository;
 
 class PageDataService
 {
     public function __construct(
-        private ChartsDataRepository   $dataRepository,
-        private GroupRepository        $groupRepository,
-        private SubjectRepository      $subjectRepository,
+        private ChartsDataRepository $dataRepository,
+        private SubjectRepository    $subjectRepository,
     )
     {}
-
-    public function getGroupPageData(Monitoring $monitoring, string $groupName, int $groupId): array
-    {
-        $subjects = $this->dataRepository->getCategories('subjects', 'groups', $groupId);
-
-        return [
-            'isEmpty' => false,
-            'monitoring' => $monitoring,
-            'group' => $groupName,
-            'averageGrade' => $this->groupRepository->getAverageGrade($groupId),
-            'absolutePerformance' => $this->groupRepository->getAbsolutePerformance($groupId),
-            'qualityPerformance' =>$this->groupRepository->getQualityPerformance($groupId),
-            'studentsAmount' =>$this->groupRepository->getStudentsAmount($groupId),
-            'gradesAmount' => $this->groupRepository->getGradesAmount($groupId),
-            'grades' => $this->dataRepository->getGradesForEachCategory('groups', 'subjects', $groupId),
-            'qualityPerformanceCategories' => $subjects,
-            'gradeDistributionCategories' => $subjects,
-            'gradesAmounts' => $this->dataRepository->getGradesAmounts('groups', $groupId),
-            'attendance' => $this->dataRepository->getAttendance($groupId),
-            'performance' => $this->dataRepository->getQualityPerformance($groupId),
-        ];
-    }
 
     public function getSubjectPageData(Monitoring $monitoring, string $subjectName, int $subjectId): array
     {

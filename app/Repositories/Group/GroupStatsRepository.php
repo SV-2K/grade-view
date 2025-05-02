@@ -1,69 +1,82 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Repositories\Group;
 
 use App\Models\Group;
 use Illuminate\Support\Facades\DB;
 
-class GroupRepository
+class GroupStatsRepository
 {
+    private int $groupId;
+
+    public function setGroupId(int $groupId): void
+    {
+        $this->groupId = $groupId;
+    }
+
     public function getGroupId(int $monitoringId, ?string $groupName): int|null
     {
-        $groupId = Group::where('name', $groupName)
+        $groupId = Group::query()
+            ->where('name', $groupName)
             ->whereMonitoringId($monitoringId)
             ->value('id');
         return $groupId;
     }
-    public function getAverageGrade(int $groupId): float
+    public function getAverageGrade(): float
     {
-        $averageGrade = Group::join('students', 'groups.id', '=', 'students.group_id')
+        $averageGrade = Group::query()
+            ->join('students', 'groups.id', '=', 'students.group_id')
             ->join('grades', 'students.id', '=', 'grades.student_id')
-            ->whereGroupId($groupId)
+            ->whereGroupId($this->groupId)
             ->avg('grade');
         return $averageGrade;
     }
 
-    public function getAbsolutePerformance(int $groupId): float
+    public function getAbsolutePerformance(): float
     {
-        $absolutePerformance = Group::join('students', 'groups.id', '=', 'students.group_id')
+        $absolutePerformance = Group::query()
+            ->join('students', 'groups.id', '=', 'students.group_id')
             ->join('grades', 'students.id', '=', 'grades.student_id')
-            ->select(DB::raw(
+            ->selectRaw(
                 'SUM(CASE WHEN grades.grade IN (3, 4, 5) THEN 1 ELSE 0 END) * 100 /
                 SUM(CASE WHEN grades.grade IN (2, 3, 4, 5) THEN 1 ELSE 0 END) AS absolute_performance'
-            ))
-            ->whereGroupId($groupId)
+            )
+            ->whereGroupId($this->groupId)
             ->first()
             ->absolute_performance;
         return $absolutePerformance;
     }
 
-    public function getQualityPerformance(int $groupId): float
+    public function getQualityPerformance(): float
     {
-        $qualityPerformance = Group::join('students', 'groups.id', '=', 'students.group_id')
+        $qualityPerformance = Group::query()
+            ->join('students', 'groups.id', '=', 'students.group_id')
             ->join('grades', 'students.id', '=', 'grades.student_id')
-            ->select(DB::raw(
+            ->selectRaw(
                 'SUM(CASE WHEN grades.grade IN (4, 5) THEN 1 ELSE 0 END) * 100 /
                 SUM(CASE WHEN grades.grade IN (2, 3, 4, 5) THEN 1 ELSE 0 END) AS quality_performance'
-            ))
-            ->whereGroupId($groupId)
+            )
+            ->whereGroupId($this->groupId)
             ->first()
             ->quality_performance;
         return $qualityPerformance;
     }
 
-    public function getStudentsAmount(int $groupId): int
+    public function getStudentsAmount(): int
     {
-        $studentsAmount = Group::join('students', 'groups.id', '=', 'students.group_id')
-            ->whereGroupId($groupId)
+        $studentsAmount = Group::query()
+            ->join('students', 'groups.id', '=', 'students.group_id')
+            ->whereGroupId($this->groupId)
             ->count('students.id');
         return $studentsAmount;
     }
 
-    public function getGradesAmount(int $groupId): int
+    public function getGradesAmount(): int
     {
-        $gradesAmount = Group::join('students', 'groups.id', '=', 'students.group_id')
+        $gradesAmount = Group::query()
+            ->join('students', 'groups.id', '=', 'students.group_id')
             ->join('grades', 'students.id', '=', 'grades.student_id')
-            ->whereGroupId($groupId)
+            ->whereGroupId($this->groupId)
             ->count('grades.grade');
         return $gradesAmount;
     }
