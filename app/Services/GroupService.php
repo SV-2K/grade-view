@@ -57,7 +57,7 @@ class GroupService
     private function getQualityPerformanceData(): array
     {
         $collection = $this->chartRepository->getQualityPerformance()
-            ->sortBy('quality_performance');
+            ->sortByDesc('quality_performance');
 
         $subjects = [];
         $performances = [''];
@@ -86,7 +86,7 @@ class GroupService
     private function getGradeDistributionData(): array
     {
         $collection = $this->chartRepository->getGradeDistribution()
-            ->sortBy(['grade_5', 'grade_4', 'grade_3', 'grade_2']);
+            ->sortByDesc(['grade_5', 'grade_4', 'grade_3', 'grade_2']);
 
         $subjects = [];
         $grades = [

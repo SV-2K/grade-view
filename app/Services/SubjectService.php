@@ -44,7 +44,7 @@ class SubjectService
     private function getAverageGradesData(): array
     {
         $collection = $this->chartRepository->getAverageGrades()
-            ->sortBy('average_grade');
+            ->sortByDesc('average_grade');
 
         $averageGrades = [''];
         $groupNames = [];
@@ -75,7 +75,7 @@ class SubjectService
     private function getGradeDistributionData(): array
     {
         $collection = $this->chartRepository->getGradeDistribution()
-            ->sortBy(['grade_5', 'grade_4', 'grade_3', 'grade_2']);
+            ->sortByDesc(['grade_5', 'grade_4', 'grade_3', 'grade_2']);
 
         $groups = [];
         $grades = [

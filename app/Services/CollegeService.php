@@ -40,7 +40,7 @@ class CollegeService
     private function getQualityPerformanceData(): array
     {
         $collection = $this->collegeChartRepository->getQualityPerformance()
-            ->sortBy('quality_performance');
+            ->sortByDesc('quality_performance');
 
         $subjectPerformances = [];
         $teacherNames = [];
@@ -81,7 +81,7 @@ class CollegeService
     private function getAverageGradesData(): array
     {
         $collection = $this->collegeChartRepository->getAverageGrades()
-            ->sortBy('average_grade');
+            ->sortByDesc('average_grade');
 
         $averageGrades = [''];
         $groupNames = [];
