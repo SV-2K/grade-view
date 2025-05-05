@@ -141,3 +141,11 @@ main {
 .link {
     color: var(--dark-shades);
 }
+
+.red-text {
+    color: #ff6961;
+}
+
+.green-text {
+    color: #7abd7e;
+}
