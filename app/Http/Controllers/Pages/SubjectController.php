@@ -27,7 +27,8 @@ class SubjectController extends Controller
         if (is_null($subjectName) || is_null($subjectId)) {
             return view('pages.subject')->with([
                 'isEmpty' => true,
-                'monitoring' => $monitoring
+                'monitoring' => $monitoring,
+                'sideMenuStats' => null
             ]);
         }
 

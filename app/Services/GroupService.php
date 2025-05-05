@@ -49,7 +49,7 @@ class GroupService
         $previousMonitoringId = MonitoringRepository::getPreviousMonitoringId($currentMonitoringId);
         $previousGroupId = MonitoringRepository::getPreviousGroupId($currentMonitoringId, $groupName);
 
-        if (is_null($previousMonitoringId)) {
+        if (is_null($previousMonitoringId) || is_null($previousGroupId)) {
             return null;
         }
 

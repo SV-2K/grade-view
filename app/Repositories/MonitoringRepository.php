@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Monitoring;
+use App\Models\Subject;
 use Illuminate\Support\Facades\Auth;
 
 class MonitoringRepository
@@ -19,7 +20,7 @@ class MonitoringRepository
             ->value('monitorings.id');
     }
 
-    public static function getPreviousGroupId(Monitoring $monitoring, string $groupName)
+    public static function getPreviousGroupId(Monitoring $monitoring, string $groupName): int|null
     {
         $currentMonitoringStartDate = $monitoring->start_date;
 
@@ -31,5 +32,20 @@ class MonitoringRepository
             ->where('monitorings.start_date', '<', $currentMonitoringStartDate)
             ->orderByDesc('start_date')
             ->value('groups.id');
+    }
+
+    public static function getPreviousSubjectId(Monitoring $monitoring, int $subjectId): int|null
+    {
+        $subject = Subject::find($subjectId);
+
+        return Monitoring::query()
+            ->join('subjects', 'monitorings.id', '=', 'subjects.monitoring_id')
+            ->join('users', 'users.id', '=', 'monitorings.user_id')
+            ->where('users.id', Auth::user()->id)
+            ->where('subjects.name', $subject->name)
+            ->where('subjects.teacher_name', $subject->teacher_name)
+            ->where('monitorings.start_date', '<', $monitoring->start_date)
+            ->orderByDesc('start_date')
+            ->value('subjects.id');
     }
 }
