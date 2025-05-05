@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Monitoring;
 use App\Repositories\Group\GroupChartRepository;
 use App\Repositories\Group\GroupStatsRepository;
+use App\Repositories\MonitoringRepository;
 
 class GroupService
 {
@@ -35,10 +36,49 @@ class GroupService
             'qualityPerformance' =>$this->statsRepository->getQualityPerformance(),
             'studentsAmount' =>$this->statsRepository->getStudentsAmount(),
             'gradesAmount' => $this->statsRepository->getGradesAmount(),
+            'sideMenuStats' => $this->getSideMenuStats($monitoring, $groupName),
             'gradesRatioData' => $this->getGradesRatioData(),
             'qualityPerformanceData' => $this->getQualityPerformanceData(),
             'attendanceData' => $this->getAttendanceData(),
             'gradeDistributionData' => $this->getGradeDistributionData(),
+        ];
+    }
+
+    private function getSideMenuStats(Monitoring $currentMonitoringId, string $groupName): array|null
+    {
+        $previousMonitoringId = MonitoringRepository::getPreviousMonitoringId($currentMonitoringId);
+        $previousGroupId = MonitoringRepository::getPreviousGroupId($currentMonitoringId, $groupName);
+
+        if (is_null($previousMonitoringId)) {
+            return null;
+        }
+
+        $currentAverageGrade = round($this->statsRepository->getAverageGrade(), 2);
+        $currentAbsolutePerformance = round($this->statsRepository->getAbsolutePerformance(), 2);
+        $currentQualityPerformance = round($this->statsRepository->getQualityPerformance(), 2);
+
+        $this->statsRepository->setGroupId($previousGroupId);
+
+        $previousAverageGrade = round($this->statsRepository->getAverageGrade(), 2);
+        $previousAbsolutePerformance = round($this->statsRepository->getAbsolutePerformance(), 2);
+        $previousQualityPerformance = round($this->statsRepository->getQualityPerformance(), 2);
+
+        return [
+            'avgGrade' => [
+                'before' => $previousAverageGrade,
+                'after' => $currentAverageGrade,
+                'percentage' => round(percentageDifference($previousAverageGrade, $currentAverageGrade), 2)
+            ],
+            'absolutePerf' => [
+                'before' => $previousAbsolutePerformance,
+                'after' => $currentAbsolutePerformance,
+                'percentage' => round(percentageDifference($previousAbsolutePerformance, $currentAbsolutePerformance), 2)
+            ],
+            'qualityPerf' => [
+                'before' => $previousQualityPerformance,
+                'after' => $currentQualityPerformance,
+                'percentage' => round(percentageDifference($previousQualityPerformance, $currentQualityPerformance), 2)
+            ]
         ];
     }
 

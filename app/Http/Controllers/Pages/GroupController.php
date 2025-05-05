@@ -24,7 +24,8 @@ class GroupController extends Controller
         if (is_null($groupName) || is_null($groupId)) {
             return view('pages.group')->with([
                 'isEmpty' => true,
-                'monitoring' => $monitoring
+                'monitoring' => $monitoring,
+                'sideMenuStats' => null
             ]);
         }
 
