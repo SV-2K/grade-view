@@ -1,7 +1,7 @@
 <div class="section comparison-menu">
     <h5>Сравнение с предыдущим мониторингом:</h5>
-    @if(is_null($sideMenuStats))
-        Предыдущий мониторинг не найден
+    @if(array_key_exists('errorMessage', $sideMenuStats))
+        {{ $sideMenuStats['errorMessage'] }}
     @else
         Средний балл
         <div class="d-flex">

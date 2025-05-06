@@ -28,7 +28,9 @@ class SubjectController extends Controller
             return view('pages.subject')->with([
                 'isEmpty' => true,
                 'monitoring' => $monitoring,
-                'sideMenuStats' => null
+                'sideMenuStats' => [
+                    'errorMessage' => 'Выберите предмет...'
+                ]
             ]);
         }
 

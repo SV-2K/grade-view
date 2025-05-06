@@ -48,8 +48,16 @@ class SubjectService
         $previousMonitoringId = MonitoringRepository::getPreviousMonitoringId($currentMonitoringId);
         $previousSubjectId = MonitoringRepository::getPreviousSubjectId($currentMonitoringId, $subjectId);
 
-        if (is_null($previousMonitoringId) || is_null($previousSubjectId)) {
-            return null;
+        if (is_null($previousMonitoringId)) {
+            return [
+                'errorMessage' => 'Предыдущий мониторинг не найден'
+            ];
+        }
+
+        if (is_null($previousSubjectId)) {
+            return [
+                'errorMessage' => 'Данный предмет не был найден в предыдущем мониторинге'
+            ];
         }
 
         $currentAverageGrade = round($this->statsRepository->getAverageGrade(), 2);

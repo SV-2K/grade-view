@@ -49,8 +49,16 @@ class GroupService
         $previousMonitoringId = MonitoringRepository::getPreviousMonitoringId($currentMonitoringId);
         $previousGroupId = MonitoringRepository::getPreviousGroupId($currentMonitoringId, $groupName);
 
-        if (is_null($previousMonitoringId) || is_null($previousGroupId)) {
-            return null;
+        if (is_null($previousMonitoringId)) {
+            return [
+                'errorMessage' => 'Предыдущий мониторинг не найден'
+            ];
+        }
+
+        if (is_null($previousGroupId)) {
+            return [
+                'errorMessage' => 'Данная группа не была найдена в предыдущем мониторинге'
+            ];
         }
 
         $currentAverageGrade = round($this->statsRepository->getAverageGrade(), 2);

@@ -25,7 +25,9 @@ class GroupController extends Controller
             return view('pages.group')->with([
                 'isEmpty' => true,
                 'monitoring' => $monitoring,
-                'sideMenuStats' => null
+                'sideMenuStats' => [
+                    'errorMessage' => 'Выберите группу...'
+                ]
             ]);
         }
 

@@ -44,7 +44,9 @@ class CollegeService
         $previousMonitoringId = MonitoringRepository::getPreviousMonitoringId($currentMonitoringId);
 
         if (is_null($previousMonitoringId)) {
-            return null;
+            return [
+                'errorMessage' => 'Предыдущий мониторинг не найден'
+            ];
         }
 
         $currentAverageGrade = round($this->collegeStatsRepository->getAverageGrade(), 2);
