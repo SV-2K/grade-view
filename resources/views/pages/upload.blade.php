@@ -3,7 +3,7 @@
 @section('main')
     <a href="{{ route('profile') }}" class="section ps-1">&#8592; Назад в профиль</a>
     <h1 class="d-block mt-3">Загрузка мониторинга</h1>
-    <form action="{{ route('monitoring.upload') }}" method="post" enctype="multipart/form-data">
+    <form action="{{ route('monitoring.upload') }}" method="post" onsubmit="disableButton(this)" enctype="multipart/form-data">
         @csrf
         <div class="mb-3">
             <label for="name" class="form-label">Название мониторинга</label>
@@ -43,4 +43,11 @@
         </div>
         <button type="submit" class="btn btn-primary">Загрузить</button>
     </form>
+    <script>
+        function disableButton(form) {
+            const button = form.querySelector('button[type="submit"]');
+            button.disabled = true;
+            button.innerText = 'Загрузка...';
+        }
+    </script>
 @endsection
