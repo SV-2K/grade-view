@@ -14,7 +14,7 @@ class MonitoringRepository
 
         return Monitoring::query()
             ->join('users', 'users.id', '=', 'monitorings.user_id')
-            ->where('users.id', Auth::user()->id)
+            ->where('users.id', $currentMonitoring->user_id)
             ->where('monitorings.start_date', '<', $currentMonitoringStartDate)
             ->orderByDesc('start_date')
             ->value('monitorings.id');
@@ -27,7 +27,7 @@ class MonitoringRepository
         return Monitoring::query()
             ->join('groups', 'monitorings.id', '=', 'groups.monitoring_id')
             ->join('users', 'users.id', '=', 'monitorings.user_id')
-            ->where('users.id', Auth::user()->id)
+            ->where('users.id', $monitoring->user_id)
             ->where('groups.name', $groupName)
             ->where('monitorings.start_date', '<', $currentMonitoringStartDate)
             ->orderByDesc('start_date')
@@ -41,7 +41,7 @@ class MonitoringRepository
         return Monitoring::query()
             ->join('subjects', 'monitorings.id', '=', 'subjects.monitoring_id')
             ->join('users', 'users.id', '=', 'monitorings.user_id')
-            ->where('users.id', Auth::user()->id)
+            ->where('users.id', $monitoring->user_id)
             ->where('subjects.name', $subject->name)
             ->where('subjects.teacher_name', $subject->teacher_name)
             ->where('monitorings.start_date', '<', $monitoring->start_date)
